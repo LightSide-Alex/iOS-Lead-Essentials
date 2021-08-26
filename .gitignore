@@ -1,0 +1,10 @@
+Freshii/Freshii/Frameworks/TacitOrderSDK-iOS
+.DS_Store
+xcuserdata
+/build
+*.mode1v3
+*.pbxuser
+*.xccheckout
+Pods
+build/
+report.xml
