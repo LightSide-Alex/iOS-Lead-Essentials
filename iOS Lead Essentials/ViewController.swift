@@ -16,10 +16,10 @@ class ViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let loginVC = segue.destination as? LoginViewController {
-            loginVC.login = ApiClient.shared.login
+            loginVC.worker = ApiClient.shared
         }
         if let feedVC = segue.destination as? FeedViewController {
-            feedVC.getFeed = ApiClient.shared.getFeed
+            feedVC.worker = ApiClient.shared
         }
     }
 }
@@ -28,11 +28,11 @@ struct User {}
 struct FeedItem {}
 
 // Main Module
-extension ApiClient {
+extension ApiClient: LoginWorker {
     func login(completion: (User?) -> Void) {}
 }
 
-extension ApiClient {
+extension ApiClient: FeedWorker {
     func getFeed(completion: ([FeedItem]) -> Void) {}
 }
 
@@ -49,30 +49,38 @@ class ApiClient {
 class MockApiClient: ApiClient {}
 
 // Login Module
+protocol LoginWorker {
+    func login(completion: (User?) -> Void)
+}
+
 class LoginViewController: UIViewController {
-    var login: (((User?) -> Void) -> Void)?
+    var worker: LoginWorker?
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     func didTapLogin() {
-        login? { user in
+        worker?.login { user in
             // show user
         }
     }
 }
 
 // Feed Module
+protocol FeedWorker {
+    func getFeed(completion: ([FeedItem]) -> Void)
+}
+
 class FeedViewController: UIViewController {
-    var getFeed: ((([FeedItem]) -> Void) -> Void)?
+    var worker: FeedWorker?
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     func didTapGetFeed() {
-        getFeed? { feedItems in
+        worker?.getFeed { feedItems in
             // show feed items
         }
     }
