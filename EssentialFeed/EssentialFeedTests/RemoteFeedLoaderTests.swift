@@ -45,16 +45,27 @@ class RemoteFeedLoaderTests: XCTestCase {
         
         [199, 201, 300, 400, 500].enumerated().forEach { index, code in
             expect(sut, completeWithError: .invalidData) {
-                client.complete(withStatusCode: code, at: index)
+                client.complete(withStatusCode: code, data: Data(), at: index)
             }
         }
     }
     
     func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
         let (sut, client) = makeSUT()
+        let json = "Invalid JSON".utf8
         expect(sut, completeWithError: .invalidData) {
-            client.complete(withStatusCode: 200)
+            client.complete(withStatusCode: 200, data: Data(json))
         }
+    }
+    
+    func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
+        let (sut, client) = makeSUT()
+        var results: [RemoteFeedLoader.Result] = []
+        sut.load { results.append($0) }
+        let json = "{\"items\": []}".utf8
+        client.complete(withStatusCode: 200, data: Data(json))
+        
+        XCTAssertEqual(results, [.success([])])
     }
     
     private func expect(_ sut: RemoteFeedLoader,
@@ -90,7 +101,7 @@ class RemoteFeedLoaderTests: XCTestCase {
             messages[index].completion(.error(error))
         }
         
-        func complete(withStatusCode code: Int, data: Data = Data(), at index: Int = 0) {
+        func complete(withStatusCode code: Int, data: Data, at index: Int = 0) {
             let response = HTTPURLResponse(
                 url: messages[index].url,
                 statusCode: code,
