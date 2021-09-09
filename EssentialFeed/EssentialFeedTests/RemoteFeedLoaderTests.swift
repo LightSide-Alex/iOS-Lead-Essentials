@@ -62,11 +62,11 @@ class RemoteFeedLoaderTests: XCTestCase {
                         for action: () -> Void,
                         file: StaticString = #file,
                         line: UInt = #line) {
-        var capturedErrors: [RemoteFeedLoader.Error?] = []
+        var capturedErrors: [RemoteFeedLoader.Result] = []
         sut.load { capturedErrors.append($0) }
         
         action()
-        XCTAssertEqual(capturedErrors, [error], file: file, line: line)
+        XCTAssertEqual(capturedErrors, ([.failure(error)]), file: file, line: line)
     }
     
     private func makeSUT(with url: URL = URL(string: "http://custom-url.com")!) -> (RemoteFeedLoader, HTTPClientSpy) {
