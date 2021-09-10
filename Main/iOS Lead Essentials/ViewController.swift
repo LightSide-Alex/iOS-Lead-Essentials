@@ -85,3 +85,13 @@ class FeedViewController: UIViewController {
         }
     }
 }
+
+protocol TestInterface: UITableViewCell {
+    func kek()
+}
+
+class TestImplementation: UITableViewCell, TestInterface {
+    func kek() {
+        print("DO KEK")
+    }
+}
