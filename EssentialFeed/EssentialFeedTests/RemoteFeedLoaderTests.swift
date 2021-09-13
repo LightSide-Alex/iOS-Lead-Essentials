@@ -89,9 +89,15 @@ class RemoteFeedLoaderTests: XCTestCase {
         XCTAssertEqual(results, [result], file: file, line: line)
     }
     
-    private func makeSUT(with url: URL = URL(string: "http://custom-url.com")!) -> (RemoteFeedLoader, HTTPClientSpy) {
+    private func makeSUT(with url: URL = URL(string: "http://custom-url.com")!,
+                         file: StaticString = #file,
+                         line: UInt = #line) -> (RemoteFeedLoader, HTTPClientSpy) {
         let client = HTTPClientSpy()
         let sut = RemoteFeedLoader(url: url, client: client)
+        addTeardownBlock { [weak sut] in
+            XCTAssertNil(sut, "SUT should be deallocated after function ends", file: file, line: line)
+        }
+        
         return (sut, client)
     }
     
