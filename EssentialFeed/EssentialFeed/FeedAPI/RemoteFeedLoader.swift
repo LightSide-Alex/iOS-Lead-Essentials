@@ -7,15 +7,6 @@
 
 import Foundation
 
-public enum HTTPClientResult {
-    case success(Data, HTTPURLResponse)
-    case error(Error)
-}
-
-public protocol HTTPClient {
-    func getFrom(url: URL, completion: @escaping (HTTPClientResult) -> Void)
-}
-
 public final class RemoteFeedLoader {
     private let url: URL
     private let client: HTTPClient
@@ -49,35 +40,5 @@ public final class RemoteFeedLoader {
                 completion(.failure(.connectivity))
             }
         }
-    }
-}
-
-struct FeedItemsMapper {
-    private struct Root: Codable {
-        let items: [CFeedItem]
-    }
-    
-    private struct CFeedItem: Codable {
-        let id: UUID
-        let description: String?
-        let location: String?
-        let imageURL: URL
-        
-        var item: FeedItem {
-            FeedItem(id: id, description: description, location: location, image: imageURL)
-        }
-    }
-    
-    private static var OK_200: Int {
-        return 200
-    }
-    
-    static func mapData(_ data: Data, response: HTTPURLResponse) throws -> [FeedItem] {
-        guard response.statusCode == OK_200 else {
-            throw NSError()
-        }
-        
-        let root = try JSONDecoder().decode(Root.self, from: data)
-        return root.items.map { $0.item }
     }
 }
