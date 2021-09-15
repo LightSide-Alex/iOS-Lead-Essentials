@@ -35,7 +35,7 @@ class RemoteFeedLoaderTests: XCTestCase {
     
     func test_load_deliversErrorOnClientError() {
         let (sut, client) = makeSUT()
-        expect(sut, completeWith: .failure(RemoteFeedLoader.Error.connectivity)) {
+        expect(sut, completeWith: failure(.connectivity)) {
             client.complete(with: NSError(domain: "test", code: 0, userInfo: nil))
         }
     }
@@ -44,7 +44,7 @@ class RemoteFeedLoaderTests: XCTestCase {
         let (sut, client) = makeSUT()
         
         [199, 201, 300, 400, 500].enumerated().forEach { index, code in
-            expect(sut, completeWith: .failure(RemoteFeedLoader.Error.invalidData)) {
+            expect(sut, completeWith: failure(.invalidData)) {
                 client.complete(withStatusCode: code, data: makeItemsJSON([]), at: index)
             }
         }
@@ -53,7 +53,7 @@ class RemoteFeedLoaderTests: XCTestCase {
     func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
         let (sut, client) = makeSUT()
         let json = "Invalid JSON".utf8
-        expect(sut, completeWith: .failure(RemoteFeedLoader.Error.invalidData)) {
+        expect(sut, completeWith: failure(.invalidData)) {
             client.complete(withStatusCode: 200, data: Data(json))
         }
     }
@@ -149,6 +149,10 @@ class RemoteFeedLoaderTests: XCTestCase {
         addTeardownBlock { [weak instance] in
             XCTAssertNil(instance, "\(String(describing: instance)) should be deallocated after function ends", file: file, line: line)
         }
+    }
+    
+    private func failure(_ error: RemoteFeedLoader.Error) -> RemoteFeedLoader.Result {
+        return .failure(error)
     }
     
     private class HTTPClientSpy: HTTPClient {
