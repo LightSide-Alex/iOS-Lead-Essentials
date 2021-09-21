@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A0615BCC26F937D500B76545 /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0615BCB26F937D500B76545 /* URLSessionHTTPClientTests.swift */; };
 		A06B7A9A26E074FB00761FC3 /* RemoteFeedLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7A9926E074FB00761FC3 /* RemoteFeedLoaderTests.swift */; };
 		A06F195026E45470001E9F07 /* RemoteFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06F194F26E45470001E9F07 /* RemoteFeedLoader.swift */; };
 		A082018626DF1B0D00BDFA5E /* FeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A082018526DF1B0D00BDFA5E /* FeedLoader.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A0615BCB26F937D500B76545 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
 		A06B7A9926E074FB00761FC3 /* RemoteFeedLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedLoaderTests.swift; sourceTree = "<group>"; };
 		A06F194F26E45470001E9F07 /* RemoteFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedLoader.swift; sourceTree = "<group>"; };
 		A082018526DF1B0D00BDFA5E /* FeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoader.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				A06B7A9926E074FB00761FC3 /* RemoteFeedLoaderTests.swift */,
+				A0615BCB26F937D500B76545 /* URLSessionHTTPClientTests.swift */,
 			);
 			path = FeedAPI;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A06B7A9A26E074FB00761FC3 /* RemoteFeedLoaderTests.swift in Sources */,
+				A0615BCC26F937D500B76545 /* URLSessionHTTPClientTests.swift in Sources */,
 				A0AC45F726DDDABB0063B260 /* EssentialFeedTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
