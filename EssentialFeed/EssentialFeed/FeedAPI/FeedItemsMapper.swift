@@ -20,10 +20,10 @@ struct FeedItemsMapper {
         let id: UUID
         let description: String?
         let location: String?
-        let imageURL: URL
+        let image: URL
         
         var item: FeedItem {
-            FeedItem(id: id, description: description, location: location, image: imageURL)
+            FeedItem(id: id, description: description, location: location, image: image)
         }
     }
     
