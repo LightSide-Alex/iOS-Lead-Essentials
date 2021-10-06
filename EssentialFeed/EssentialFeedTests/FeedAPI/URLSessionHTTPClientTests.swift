@@ -54,10 +54,6 @@ class URLSessionHTTPClientTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
-    func test_getFromUrl_failsOnAllNilValues() {
-        XCTAssertNotNil(resultErrorFor(data: nil, response: nil, error: nil))
-    }
-    
     func test_getFromUrl_deliversFailureOnRequestError() {
         let error = NSError(domain: "any error", code: 0, userInfo: nil)
         guard let receivedError = resultErrorFor(data: nil, response: nil, error: error) as NSError? else {
@@ -67,6 +63,24 @@ class URLSessionHTTPClientTests: XCTestCase {
         
         XCTAssertEqual(receivedError.domain, error.domain)
         XCTAssertEqual(receivedError.code, error.code)
+    }
+    
+    func test_getFromUrl_failsOnAllInvalidRepresentationCases() {
+        let anyData = Data("Any data".utf8)
+        let anyError = NSError(domain: "any error", code: 0, userInfo: nil)
+        let nonHTTPUrlResponse = URLResponse(url: anyUrl(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
+        let anyHTTPUrlResponse = HTTPURLResponse(url: anyUrl(), statusCode: 200, httpVersion: nil, headerFields: nil)
+        
+        XCTAssertNotNil(resultErrorFor(data: nil, response: nil, error: nil))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: nonHTTPUrlResponse, error: nil))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: anyHTTPUrlResponse, error: nil))
+        XCTAssertNotNil(resultErrorFor(data: anyData, response: nil, error: nil))
+        XCTAssertNotNil(resultErrorFor(data: anyData, response: nil, error: anyError))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: nonHTTPUrlResponse, error: anyError))
+        XCTAssertNotNil(resultErrorFor(data: nil, response: anyHTTPUrlResponse, error: anyError))
+        XCTAssertNotNil(resultErrorFor(data: anyData, response: nonHTTPUrlResponse, error: anyError))
+        XCTAssertNotNil(resultErrorFor(data: anyData, response: anyHTTPUrlResponse, error: anyError))
+        XCTAssertNotNil(resultErrorFor(data: anyData, response: nonHTTPUrlResponse, error: nil))
     }
     
     private func anyUrl() -> URL {
