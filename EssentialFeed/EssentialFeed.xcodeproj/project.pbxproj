@@ -17,6 +17,7 @@
 		A0AC45F226DDDABB0063B260 /* EssentialFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0AC45E826DDDABB0063B260 /* EssentialFeed.framework */; };
 		A0AC45F926DDDABB0063B260 /* EssentialFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = A0AC45EB26DDDABB0063B260 /* EssentialFeed.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A0AC460326DDDC040063B260 /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC460226DDDC040063B260 /* FeedItem.swift */; };
+		A0EFB3A9270DE0BB0077588E /* URLSessionHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EFB3A8270DE0BB0077588E /* URLSessionHTTPClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		A0AC45F126DDDABB0063B260 /* EssentialFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0AC45F826DDDABB0063B260 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0AC460226DDDC040063B260 /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
+		A0EFB3A8270DE0BB0077588E /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				A06F194F26E45470001E9F07 /* RemoteFeedLoader.swift */,
 				A0911F9D26EEE4BA00BC4A60 /* FeedItemsMapper.swift */,
 				A0911F9B26EEE4A900BC4A60 /* HTTPClient.swift */,
+				A0EFB3A8270DE0BB0077588E /* URLSessionHTTPClient.swift */,
 			);
 			path = FeedAPI;
 			sourceTree = "<group>";
@@ -253,6 +256,7 @@
 				A06F195026E45470001E9F07 /* RemoteFeedLoader.swift in Sources */,
 				A0911F9C26EEE4A900BC4A60 /* HTTPClient.swift in Sources */,
 				A0AC460326DDDC040063B260 /* FeedItem.swift in Sources */,
+				A0EFB3A9270DE0BB0077588E /* URLSessionHTTPClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
