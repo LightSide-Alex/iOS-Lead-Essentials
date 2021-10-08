@@ -104,7 +104,7 @@ class RemoteFeedLoaderTests: XCTestCase {
             case let (.failure(receivedError as RemoteFeedLoader.Error), .failure(expectedError as RemoteFeedLoader.Error)):
                 XCTAssertEqual(receivedError, expectedError, file: file, line: line)
             default:
-                XCTFail("Expected \(expectedResult), but got \(receivedResult) instead")
+                XCTFail("Expected \(expectedResult), but got \(receivedResult) instead", file: file, line: line)
             }
             
             exp.fulfill()
@@ -134,7 +134,7 @@ class RemoteFeedLoaderTests: XCTestCase {
             "id": item.id.uuidString,
             "description": item.description,
             "location": item.location,
-            "imageURL": item.image.absoluteString
+            "image": item.image.absoluteString
         ].compactMapValues { $0 }
         
         return (item, jsonItem)
