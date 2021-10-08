@@ -173,7 +173,6 @@ private extension URLSessionHTTPClientTests {
         }
         
         override class func canInit(with request: URLRequest) -> Bool {
-            requestObserver?(request)
             return true
         }
         
@@ -182,6 +181,11 @@ private extension URLSessionHTTPClientTests {
         }
         
         override func startLoading() {
+            if let observer = Self.requestObserver {
+                client?.urlProtocolDidFinishLoading(self)
+                return observer(request)
+            }
+            
             if let data = Self.stub?.data {
                 client?.urlProtocol(self, didLoad: data)
             }
