@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  build-and-test:
+
+    runs-on: macos-latest
+    
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_13.0.app/Contents/Developer
+  
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Build and test
+      run: |
+      cd EssentialFeed
+      xcodebuild clean test -project EssentialFeed.xcodeproj -scheme CI CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
