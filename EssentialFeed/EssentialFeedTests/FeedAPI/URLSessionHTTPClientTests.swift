@@ -185,20 +185,22 @@ private extension URLSessionHTTPClientTests {
         }
         
         override func startLoading() {
-            if let data = Self.stub?.data {
+            guard let stub = Self.stub else { return }
+            
+            if let data = stub.data {
                 client?.urlProtocol(self, didLoad: data)
             }
             
-            if let response = Self.stub?.response {
+            if let response = stub.response {
                 client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
             }
             
-            if let error = Self.stub?.error {
+            if let error = stub.error {
                 client?.urlProtocol(self, didFailWithError: error)
             }
             
             client?.urlProtocolDidFinishLoading(self)
-            Self.stub?.observer?(request)
+            stub.observer?(request)
         }
         
         override func stopLoading() {}
