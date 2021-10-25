@@ -16,15 +16,27 @@ final class LocalFeedLoader {
     }
     
     func save(_ items: [FeedItem]) {
-        store.deleteCacheFeed()
+        store.deleteCacheFeed(completion: { _ in
+            
+        })
     }
 }
 
 final class FeedStore {
-    private(set) var deleteCacheFeedCount = 0
+    typealias DeletionCompletion = (Error?) -> Void
     
-    func deleteCacheFeed() {
+    private(set) var deleteCacheFeedCount = 0
+    private(set) var insertCacheFeedCount = 0
+    
+    private var deletionCompletions: [DeletionCompletion] = []
+    
+    func deleteCacheFeed(completion: @escaping DeletionCompletion) {
+        deletionCompletions.append(completion)
         deleteCacheFeedCount += 1
+    }
+    
+    func completeDeletion(with error: Error, at index: Int = 0) {
+        deletionCompletions[index](error)
     }
 }
 
@@ -44,6 +56,18 @@ class FeedCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.deleteCacheFeedCount, 1)
     }
     
+    func test_save_doesNotRequestInsertOnDeletionError() {
+        let (sut, store) = makeSUT()
+        let items = [uniqueItem(), uniqueItem()]
+        let deletionError = anyNSError()
+        
+        sut.save(items)
+        store.completeDeletion(with: deletionError)
+        
+        XCTAssertEqual(store.deleteCacheFeedCount, 1)
+        XCTAssertEqual(store.insertCacheFeedCount, 0)
+    }
+    
     // MARK: Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStore) {
         let store = FeedStore()
@@ -61,4 +85,7 @@ class FeedCacheUseCaseTests: XCTestCase {
         URL(string: "https://any-url.com")!
     }
     
+    private func anyNSError() -> NSError {
+        return NSError(domain: "any error", code: 0, userInfo: nil)
+    }
 }
