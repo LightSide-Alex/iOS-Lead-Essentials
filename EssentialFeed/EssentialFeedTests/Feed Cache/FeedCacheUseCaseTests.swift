@@ -16,19 +16,23 @@ final class LocalFeedLoader {
     }
     
     func save(_ items: [FeedItem]) {
-        store.deleteCacheFeed(completion: { _ in
-            
+        store.deleteCacheFeed(completion: { [unowned self] deletionError in
+            if deletionError == nil {
+                self.store.insert(items) { _ in }
+            }
         })
     }
 }
 
 final class FeedStore {
     typealias DeletionCompletion = (Error?) -> Void
+    typealias InsertionCompletion = (Error?) -> Void
     
     private(set) var deleteCacheFeedCount = 0
     private(set) var insertCacheFeedCount = 0
     
     private var deletionCompletions: [DeletionCompletion] = []
+    private var insertionCompletions: [DeletionCompletion] = []
     
     func deleteCacheFeed(completion: @escaping DeletionCompletion) {
         deletionCompletions.append(completion)
@@ -37,6 +41,15 @@ final class FeedStore {
     
     func completeDeletion(with error: Error, at index: Int = 0) {
         deletionCompletions[index](error)
+    }
+    
+    func completeDeletionSuccessfully(at index: Int = 0) {
+        deletionCompletions[index](nil)
+    }
+    
+    func insert(_ items: [FeedItem], completion: @escaping InsertionCompletion) {
+        insertionCompletions.append(completion)
+        insertCacheFeedCount += 1
     }
 }
 
@@ -56,7 +69,7 @@ class FeedCacheUseCaseTests: XCTestCase {
         XCTAssertEqual(store.deleteCacheFeedCount, 1)
     }
     
-    func test_save_doesNotRequestInsertOnDeletionError() {
+    func test_save_doesNotRequestCacheInsertionOnDeletionError() {
         let (sut, store) = makeSUT()
         let items = [uniqueItem(), uniqueItem()]
         let deletionError = anyNSError()
@@ -66,6 +79,17 @@ class FeedCacheUseCaseTests: XCTestCase {
         
         XCTAssertEqual(store.deleteCacheFeedCount, 1)
         XCTAssertEqual(store.insertCacheFeedCount, 0)
+    }
+    
+    func test_save_requestsCacheInsertionOnSuccessfulDeletion() {
+        let (sut, store) = makeSUT()
+        let items = [uniqueItem(), uniqueItem()]
+        
+        sut.save(items)
+        store.completeDeletionSuccessfully()
+        
+        XCTAssertEqual(store.deleteCacheFeedCount, 1)
+        XCTAssertEqual(store.insertCacheFeedCount, 1)
     }
     
     // MARK: Helpers
