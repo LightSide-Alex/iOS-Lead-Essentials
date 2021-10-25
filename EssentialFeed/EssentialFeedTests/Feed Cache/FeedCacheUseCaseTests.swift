@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import EssentialFeed
 
 final class LocalFeedLoader {
     let store: FeedStore
@@ -13,10 +14,18 @@ final class LocalFeedLoader {
     init(store: FeedStore) {
         self.store = store
     }
+    
+    func save(_ items: [FeedItem]) {
+        store.deleteCacheFeed()
+    }
 }
 
 final class FeedStore {
-    var deleteCacheFeedCount = 0
+    private(set) var deleteCacheFeedCount = 0
+    
+    func deleteCacheFeed() {
+        deleteCacheFeedCount += 1
+    }
 }
 
 class FeedCacheUseCaseTests: XCTestCase {
@@ -27,4 +36,23 @@ class FeedCacheUseCaseTests: XCTestCase {
         
         XCTAssertEqual(store.deleteCacheFeedCount, 0)
     }
+    
+    func test_save_requestsCacheDeletion() {
+        let store = FeedStore()
+        let loader = LocalFeedLoader(store: store)
+        let items = [uniqueItem(), uniqueItem()]
+        loader.save(items)
+        
+        XCTAssertEqual(store.deleteCacheFeedCount, 1)
+    }
+    
+    // MARK: Helpers
+    private func uniqueItem() -> FeedItem {
+        FeedItem(id: UUID(), description: "any", location: "any", image: anyURL())
+    }
+    
+    private func anyURL() -> URL {
+        URL(string: "https://any-url.com")!
+    }
+    
 }
