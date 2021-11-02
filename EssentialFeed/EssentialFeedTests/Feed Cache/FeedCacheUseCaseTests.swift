@@ -181,6 +181,5 @@ class FeedCacheUseCaseTests: XCTestCase {
         func completeInsertionSuccessfully(at index: Int = 0) {
             insertionCompletions[index](nil)
         }
-        
     }
 }
