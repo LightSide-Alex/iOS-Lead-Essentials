@@ -1,5 +1,5 @@
 //
-//  FeedCacheUseCaseTests.swift
+//  InsertFeedInCacheUseCaseTests.swift
 //  EssentialFeedTests
 //
 //  Created by Oleksandr Balan on 2021-10-25.
@@ -8,7 +8,7 @@
 import XCTest
 import EssentialFeed
 
-class FeedCacheUseCaseTests: XCTestCase {
+class InsertFeedInCacheUseCaseTests: XCTestCase {
     
     func test_init_doesNotDeleteCacheUponCreation() {
         let (_, store) = makeSUT()
