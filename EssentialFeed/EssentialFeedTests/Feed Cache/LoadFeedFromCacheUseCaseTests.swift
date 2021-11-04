@@ -71,6 +71,15 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
         }
     }
     
+    func test_load_deletesCacheOnRetrievalError() {
+        let (sut, store) = makeSUT()
+        
+        sut.load(completion: { _ in })
+        store.completeRetrieval(with: anyNSError())
+        
+        XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCachedFeed])
+    }
+    
     // MARK: Helpers
     private func expect(_ sut: LocalFeedLoader,
                         toCompleteWith expectedResult: LocalFeedLoader.LoadResult,
