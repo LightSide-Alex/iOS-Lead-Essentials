@@ -21,7 +21,7 @@ class URLSessionHTTPClientTests: XCTestCase {
     }
     
     func test_getFromUrl_perfromsGetRequestWithCorrectURL() {
-        let url = anyUrl()
+        let url = anyURL()
         let exp = expectation(description: "Wait for getFrom result")
         
         URLProtocolStub.observe { request in
@@ -74,24 +74,16 @@ class URLSessionHTTPClientTests: XCTestCase {
         XCTAssertEqual(values?.response.statusCode, response.statusCode)
     }
     
-    private func anyUrl() -> URL {
-        return URL(string: "http://any-url.com")!
-    }
-    
     private func anyData() -> Data {
         return Data("Any data".utf8)
     }
     
-    private func anyNSError() -> NSError {
-        return NSError(domain: "any error", code: 0, userInfo: nil)
-    }
-    
     private func nonHTTPUrlResponse() -> URLResponse {
-        return URLResponse(url: anyUrl(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
+        return URLResponse(url: anyURL(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
     }
     
     private func anyHTTPUrlResponse() -> HTTPURLResponse {
-        return HTTPURLResponse(url: anyUrl(), statusCode: 200, httpVersion: nil, headerFields: nil)!
+        return HTTPURLResponse(url: anyURL(), statusCode: 200, httpVersion: nil, headerFields: nil)!
     }
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> HTTPClient {
@@ -132,7 +124,7 @@ class URLSessionHTTPClientTests: XCTestCase {
         let exp = expectation(description: "Wait for getFrom result")
         
         var receivedResult: HTTPClientResult!
-        sut.getFrom(url: anyUrl()) { result in
+        sut.getFrom(url: anyURL()) { result in
             receivedResult = result
             exp.fulfill()
         }

@@ -174,5 +174,4 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
             messages[index].completion(.success(data, response))
         }
     }
-    
 }
