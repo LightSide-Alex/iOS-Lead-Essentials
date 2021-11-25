@@ -168,13 +168,9 @@ class CodableFeedStoreTests: XCTestCase {
     
     func test_delete_hasNoSideEffectsOnEmptyCache() {
         let sut = makeSUT()
-        let exp = expectation(description: "Wait for cache deletion")
         
-        sut.deleteCacheFeed { deletionError in
-            XCTAssertNil(deletionError, "Expected to delete cache successfully")
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
+        let deletionError = deleteCache(from: sut)
+        XCTAssertNil(deletionError, "Expected to delete cache successfully")
         
         expect(sut, toRetrieve: .empty)
     }
@@ -183,12 +179,8 @@ class CodableFeedStoreTests: XCTestCase {
         let sut = makeSUT()
         insert((uniqueImageFeed().local, Date()), to: sut)
         
-        let exp = expectation(description: "Wait for cache deletion")
-        sut.deleteCacheFeed { deletionError in
-            XCTAssertNil(deletionError, "Expected to delete cache successfully")
-            exp.fulfill()
-        }
-        wait(for: [exp], timeout: 1.0)
+        let deletionError = deleteCache(from: sut)
+        XCTAssertNil(deletionError, "Expected to delete cache successfully")
         
         expect(sut, toRetrieve: .empty)
     }
@@ -231,8 +223,7 @@ class CodableFeedStoreTests: XCTestCase {
     }
     
     @discardableResult
-    func insert(_ cache: (feed: [LocalFeedImage], timestamp: Date), to sut: CodableFeedStore,
-                file: StaticString = #file, line: UInt = #line) -> Error? {
+    func insert(_ cache: (feed: [LocalFeedImage], timestamp: Date), to sut: CodableFeedStore) -> Error? {
         let exp = expectation(description: "Wait for cache insertion")
         var insertionError: Error?
         sut.insert(cache.feed, timestamp: cache.timestamp) { receivedInsertionError in
@@ -242,6 +233,18 @@ class CodableFeedStoreTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
         
         return insertionError
+    }
+    
+    func deleteCache(from sut: CodableFeedStore) -> Error? {
+        let exp = expectation(description: "Wait for cache deletion")
+        var deletionError: Error?
+        sut.deleteCacheFeed { receivedDeletionError in
+            deletionError = receivedDeletionError
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+        
+        return deletionError
     }
     
     private func testSpecificStoreURL() -> URL {
