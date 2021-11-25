@@ -88,7 +88,7 @@ class CodableFeedStoreTests: XCTestCase {
     func test_retrieve_hasNoSideEffectsOnEmptyCache() {
         let sut = makeSUT()
         
-        expect(sut, toRetrieve: .empty)
+        expect(sut, toRetrieveTwice: .empty)
     }
     
     func test_retrieve_deliversFoundValuesOnNonEmptyCache() {
@@ -106,7 +106,7 @@ class CodableFeedStoreTests: XCTestCase {
         let timestamp = Date()
         
         insert((feed, timestamp), to: sut)
-        expect(sut, toRetrieve: .found(feed: feed, timestamp: timestamp))
+        expect(sut, toRetrieveTwice: .found(feed: feed, timestamp: timestamp))
     }
     
     func test_retrieve_deliversFailureOnRetrievalEror() {
