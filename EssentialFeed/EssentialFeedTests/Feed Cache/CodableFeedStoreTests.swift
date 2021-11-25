@@ -165,8 +165,8 @@ class CodableFeedStoreTests: XCTestCase {
         let sut = makeSUT()
         let exp = expectation(description: "Wait for cache deletion")
         
-        sut.deleteCacheFeed { deletionRrror in
-            XCTAssertNil(deletionRrror, "Expected to delete cache successfully")
+        sut.deleteCacheFeed { deletionError in
+            XCTAssertNil(deletionError, "Expected to delete cache successfully")
             exp.fulfill()
         }
         wait(for: [exp], timeout: 1.0)
