@@ -211,8 +211,8 @@ class CodableFeedStoreTests: XCTestCase {
                 file: StaticString = #file, line: UInt = #line) {
         let exp = expectation(description: "Wait for cache retrieval")
         
-        sut.retrieve { retrieveResult in
-            switch (retrieveResult, expectedResult) {
+        sut.retrieve { retrievedResult in
+            switch (retrievedResult, expectedResult) {
             case (.empty, .empty), (.failure, .failure):
                 break
                 
