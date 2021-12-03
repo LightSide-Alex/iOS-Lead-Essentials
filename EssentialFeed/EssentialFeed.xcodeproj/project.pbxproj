@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A02BE3F82759AA31009D7D82 /* XCTestCase+FailableRetrieveFeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BE3F72759AA31009D7D82 /* XCTestCase+FailableRetrieveFeedStoreSpecs.swift */; };
 		A05F88F4272B985C008DD165 /* RemoteFeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05F88F3272B985C008DD165 /* RemoteFeedItem.swift */; };
 		A05F88F6272B9887008DD165 /* LocalFeedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05F88F5272B9887008DD165 /* LocalFeedImage.swift */; };
 		A0615BCC26F937D500B76545 /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0615BCB26F937D500B76545 /* URLSessionHTTPClientTests.swift */; };
@@ -56,6 +57,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A02BE3F72759AA31009D7D82 /* XCTestCase+FailableRetrieveFeedStoreSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FailableRetrieveFeedStoreSpecs.swift"; sourceTree = "<group>"; };
 		A05F88F3272B985C008DD165 /* RemoteFeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedItem.swift; sourceTree = "<group>"; };
 		A05F88F5272B9887008DD165 /* LocalFeedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedImage.swift; sourceTree = "<group>"; };
 		A0615BCB26F937D500B76545 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				A0DED24B274C9C980016C1AF /* CodableFeedStoreTests.swift */,
 				A07976D727586B3900DA033A /* FeedStoreSpecs.swift */,
 				A07976D927586CD900DA033A /* XCTestCase+FeedStoreSpecs.swift */,
+				A02BE3F72759AA31009D7D82 /* XCTestCase+FailableRetrieveFeedStoreSpecs.swift */,
 			);
 			path = "Feed Cache";
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				A0A2FED427449E9400766DE8 /* FeedCacheTestHelpers.swift in Sources */,
 				A0A2FED227449E8700766DE8 /* SharedTestHelpers.swift in Sources */,
 				A0C7E48B2726F2EC0017615D /* InsertFeedInCacheUseCaseTests.swift in Sources */,
+				A02BE3F82759AA31009D7D82 /* XCTestCase+FailableRetrieveFeedStoreSpecs.swift in Sources */,
 				A07CADDC26FD5D0700D351E4 /* XCTestCase+TrackMemoryLeak.swift in Sources */,
 				A07976D827586B3900DA033A /* FeedStoreSpecs.swift in Sources */,
 				A0706EDA273183000069A5F4 /* LoadFeedFromCacheUseCaseTests.swift in Sources */,
