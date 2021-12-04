@@ -147,7 +147,7 @@ class CodableFeedStoreTests: XCTestCase, FailableFeedStoreSpecs {
     }
     
     private func testSpecificStoreURL() -> URL {
-        return cachesDirectory().appendingPathComponent("Test.store")
+        return cachesDirectory().appendingPathComponent("\(type(of: self)).store")
     }
     
     private func cachesDirectory() -> URL {
