@@ -13,7 +13,7 @@ import CoreData
 //you need to set the @objc name matching the class name in the data model.
 //Otherwise, the Obj-C code won't be able to access your class at runtime (it'll crash!).
 @objc(ManagedCache)
-internal class ManagedCache: NSManagedObject {
+class ManagedCache: NSManagedObject {
     @NSManaged var timestamp: Date
     @NSManaged var feed: NSOrderedSet
     
