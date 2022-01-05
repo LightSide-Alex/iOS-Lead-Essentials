@@ -1,5 +1,5 @@
 //
-//  InsertFeedInCacheUseCaseTests.swift
+//  CacheFeedUseCaseTests.swift
 //  EssentialFeedTests
 //
 //  Created by Oleksandr Balan on 2021-10-25.
@@ -8,7 +8,7 @@
 import XCTest
 import EssentialFeed
 
-class InsertFeedInCacheUseCaseTests: XCTestCase {
+class CacheFeedUseCaseTests: XCTestCase {
     
     func test_init_doesNotDeleteCacheUponCreation() {
         let (_, store) = makeSUT()
@@ -108,8 +108,8 @@ class InsertFeedInCacheUseCaseTests: XCTestCase {
         let exp = expectation(description: "Wait for save completion")
         
         var receivedError: Error?
-        sut.save(uniqueImageFeed().models) { error in
-            receivedError = error
+        sut.save(uniqueImageFeed().models) { result in
+            if case let .failure(error) = result { receivedError = error }
             exp.fulfill()
         }
         action()
