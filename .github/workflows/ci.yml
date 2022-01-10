@@ -19,11 +19,11 @@ jobs:
       uses: actions/checkout@v2
     
     - name: Build and test on macos
-        run: |
+      run: |
         cd EssentialFeed
         xcodebuild clean build test -project EssentialFeed.xcodeproj -scheme CI_macOS CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
     
     - name: Build and test on iPhone 11 Pro
-        run: |
+      run: |
         cd EssentialFeed
         xcodebuild clean build test -project EssentialFeed.xcodeproj -scheme CI_iOS -destination "platform=iOS Simulator,name=iPhone 11 Pro" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
