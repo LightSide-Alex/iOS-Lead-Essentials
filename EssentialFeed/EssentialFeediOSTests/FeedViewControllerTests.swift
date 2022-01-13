@@ -6,11 +6,12 @@
 //
 
 import XCTest
-import EssentialFeed
 import UIKit
+import EssentialFeed
 
 final class FeedViewController: UITableViewController {
     private var loader: FeedLoader?
+    
     convenience init(loader: FeedLoader) {
         self.init()
         self.loader = loader
@@ -25,7 +26,7 @@ final class FeedViewController: UITableViewController {
     }
     
     @objc private func load() {
-        loader?.load(completion: { _ in })
+        loader?.load { _ in }
     }
 }
 
@@ -58,14 +59,14 @@ final class FeedViewControllerTests: XCTestCase {
     }
     
     // MARK: - Helpers
-    func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedViewController, spy: LoaderSpy) {
-        let loaderSpy = LoaderSpy()
-        let sut = FeedViewController(loader: loaderSpy)
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
+        let loader = LoaderSpy()
+        let sut = FeedViewController(loader: loader)
         
-        trackMemoryLeak(for: loaderSpy, file: file, line: line)
+        trackMemoryLeak(for: loader, file: file, line: line)
         trackMemoryLeak(for: sut, file: file, line: line)
         
-        return (sut, loaderSpy)
+        return (sut, loader)
     }
     
     class LoaderSpy: FeedLoader {
