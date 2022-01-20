@@ -8,18 +8,19 @@
 import UIKit
 import EssentialFeed
 
-public protocol FeedImageLoader {
-    func loadImage(_ url: URL, completion: (Data?) -> Void)
+public protocol FeedImageDataLoader {
+    func loadImageData(from url: URL)
+    func cancelImageDataLoad(from url: URL)
 }
 
-public final class FeedViewController: UITableViewController {
-    private var loader: FeedLoader?
-    private var imageLoader: FeedImageLoader?
+final public class FeedViewController: UITableViewController {
+    private var feedLoader: FeedLoader?
+    private var imageLoader: FeedImageDataLoader?
     private var tableModel = [FeedImage]()
     
-    public convenience init(loader: FeedLoader, imageLoader: FeedImageLoader) {
+    public convenience init(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) {
         self.init()
-        self.loader = loader
+        self.feedLoader = feedLoader
         self.imageLoader = imageLoader
     }
     
@@ -33,21 +34,15 @@ public final class FeedViewController: UITableViewController {
     
     @objc private func load() {
         refreshControl?.beginRefreshing()
-        loader?.load { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case let .success(data):
-                self.tableModel = data
-                self.tableView.reloadData()
-            case .failure(_):
-                break
+        feedLoader?.load { [weak self] result in
+            if let feed = try? result.get() {
+                self?.tableModel = feed
+                self?.tableView.reloadData()
             }
-            self.refreshControl?.endRefreshing()
+            self?.refreshControl?.endRefreshing()
         }
     }
-}
-
-extension FeedViewController {
+    
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableModel.count
     }
@@ -58,8 +53,12 @@ extension FeedViewController {
         cell.locationContainer.isHidden = (cellModel.location == nil)
         cell.locationLabel.text = cellModel.location
         cell.descriptionLabel.text = cellModel.description
-        imageLoader?.loadImage(cellModel.url, completion: { _ in
-        })
+        imageLoader?.loadImageData(from: cellModel.url)
         return cell
+    }
+    
+    public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cellModel = tableModel[indexPath.row]
+        imageLoader?.cancelImageDataLoad(from: cellModel.url)
     }
 }
