@@ -38,7 +38,7 @@ final class FeedViewControllerTests: XCTestCase {
         sut.simulateUserInitiatedFeedReload()
         XCTAssertTrue(sut.isShowingLoadingIndicator, "Expected loading indicator once user initiates a reload")
         
-        loader.completeFeedLoading(with: anyNSError())
+        loader.completeFeedLoadingWithError(at: 1)
         XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once user initiated loading is completed")
     }
     
@@ -69,7 +69,7 @@ final class FeedViewControllerTests: XCTestCase {
         assertThat(sut, isRendering: [image0])
         
         sut.simulateUserInitiatedFeedReload()
-        loader.completeFeedLoading(with: anyNSError(), at: 1)
+        loader.completeFeedLoadingWithError(at: 1)
         assertThat(sut, isRendering: [image0])
     }
     
@@ -122,7 +122,8 @@ final class FeedViewControllerTests: XCTestCase {
         func completeFeedLoading(with feed: [FeedImage] = [], at index: Int = 0) {
             loadCompletions[index](.success(feed))
         }
-        func completeFeedLoading(with error: Error, at index: Int = 0) {
+        func completeFeedLoadingWithError(at index: Int = 0) {
+            let error = NSError(domain: "an error", code: 0)
             loadCompletions[index](.failure(error))
         }
     }
