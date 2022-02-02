@@ -5,7 +5,6 @@
 //  Created by Oleksandr Balan on 2022-01-27.
 //
 import UIKit
-import EssentialFeed
 
 final class FeedRefreshViewController: NSObject {
     private let viewModel: FeedViewModel
