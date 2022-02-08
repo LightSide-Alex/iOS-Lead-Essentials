@@ -15,8 +15,9 @@ public final class FeedUIComposer {
         let presenter = FeedPresenter(feedLoader: feedLoader)
         let refreshController = FeedRefreshViewController(presenter: presenter)
         let feedController = FeedViewController(refreshController: refreshController)
+        let weakFeedViewLoader = WeakRefVirtualProxy(object: refreshController)
         presenter.feedView = FeedViewAdapter(controller: feedController, loader: imageLoader)
-        presenter.loaderView = refreshController
+        presenter.loaderView = weakFeedViewLoader
         
         return feedController
     }
@@ -27,6 +28,20 @@ public final class FeedUIComposer {
                 FeedImageCellController(viewModel: FeedImageViewModel(model: model, imageLoader: loader, imageTransformer: UIImage.init))
             }
         }
+    }
+}
+
+private final class WeakRefVirtualProxy<T: AnyObject> {
+    weak var object: T?
+    
+    init(object: T) {
+        self.object = object
+    }
+}
+
+extension WeakRefVirtualProxy: FeedViewLoader where T: FeedViewLoader {
+    func didChangeLoadingState(_ isLoading: Bool) {
+        object?.didChangeLoadingState(isLoading)
     }
 }
 
