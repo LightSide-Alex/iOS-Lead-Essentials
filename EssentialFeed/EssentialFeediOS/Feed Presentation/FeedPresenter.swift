@@ -31,7 +31,7 @@ final class FeedPresenter {
         self.feedLoader = feedLoader
     }
     
-    func load() {
+    func loadFeed() {
         loaderView?.didChangeLoadingState(.init(isLoading: true))
         feedLoader.load { [weak self] result in
             if let feed = try? result.get() {
