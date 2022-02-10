@@ -10,42 +10,38 @@ import EssentialFeed
 struct FeedLoadingViewModel {
     let isLoading: Bool
 }
-protocol FeedViewLoader {
-    func didChangeLoadingState(_ viewModel: FeedLoadingViewModel)
+
+protocol FeedLoadingView {
+    func display(_ viewModel: FeedLoadingViewModel)
 }
 
 struct FeedViewModel {
     let feed: [FeedImage]
 }
+
 protocol FeedView {
-    func didLoadFeed(_ viewModel: FeedViewModel)
+    func display(_ viewModel: FeedViewModel)
 }
 
-protocol FeedPresentationLogic {
-    func didStartLoading()
-    func didFinishLoadingFeed(with feed: [FeedImage])
-    func didFinishLoadingFeed(with error: Error)
-}
-
-final class FeedPresenter: FeedPresentationLogic {
+final class FeedPresenter {
     private let feedView: FeedView
-    private let loaderView: FeedViewLoader
+    private let loadingView: FeedLoadingView
     
-    init(feedView: FeedView, loaderView: FeedViewLoader) {
+    init(feedView: FeedView, loadingView: FeedLoadingView) {
         self.feedView = feedView
-        self.loaderView = loaderView
+        self.loadingView = loadingView
     }
     
-    func didStartLoading() {
-        loaderView.didChangeLoadingState(.init(isLoading: true))
+    func didStartLoadingFeed() {
+        loadingView.display(FeedLoadingViewModel(isLoading: true))
     }
     
     func didFinishLoadingFeed(with feed: [FeedImage]) {
-        feedView.didLoadFeed(.init(feed: feed))
-        loaderView.didChangeLoadingState(.init(isLoading: false))
+        feedView.display(FeedViewModel(feed: feed))
+        loadingView.display(FeedLoadingViewModel(isLoading: false))
     }
     
     func didFinishLoadingFeed(with error: Error) {
-        loaderView.didChangeLoadingState(.init(isLoading: false))
+        loadingView.display(FeedLoadingViewModel(isLoading: false))
     }
 }
