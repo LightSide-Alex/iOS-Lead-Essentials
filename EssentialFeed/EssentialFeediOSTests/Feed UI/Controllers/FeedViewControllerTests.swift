@@ -14,7 +14,7 @@ final class FeedViewControllerTests: XCTestCase {
         let (sut, _) = makeSUT()
         sut.loadViewIfNeeded()
         
-        XCTAssertEqual(sut.title, "My feed")
+        XCTAssertEqual(sut.title, "My Feed")
     }
     
     func test_loadFeedActions_requestFeedFromLoader() {
