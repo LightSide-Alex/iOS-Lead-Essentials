@@ -40,15 +40,34 @@ final class FeedPresenter {
     }
     
     func didStartLoadingFeed() {
-        loadingView.display(FeedLoadingViewModel(isLoading: true))
+        if Thread.isMainThread {
+            loadingView.display(FeedLoadingViewModel(isLoading: true))
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.loadingView.display(FeedLoadingViewModel(isLoading: true))
+            }
+        }
     }
     
     func didFinishLoadingFeed(with feed: [FeedImage]) {
-        feedView.display(FeedViewModel(feed: feed))
-        loadingView.display(FeedLoadingViewModel(isLoading: false))
+        if Thread.isMainThread {
+            feedView.display(FeedViewModel(feed: feed))
+            loadingView.display(FeedLoadingViewModel(isLoading: false))
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.feedView.display(FeedViewModel(feed: feed))
+                self?.loadingView.display(FeedLoadingViewModel(isLoading: false))
+            }
+        }
     }
     
     func didFinishLoadingFeed(with error: Error) {
-        loadingView.display(FeedLoadingViewModel(isLoading: false))
+        if Thread.isMainThread {
+            loadingView.display(FeedLoadingViewModel(isLoading: false))
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.loadingView.display(FeedLoadingViewModel(isLoading: false))
+            }
+        }
     }
 }
