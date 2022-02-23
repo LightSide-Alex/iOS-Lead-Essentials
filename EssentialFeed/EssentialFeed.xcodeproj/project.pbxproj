@@ -74,6 +74,7 @@
 		A0ECF8C9275C3E6800F5F559 /* CoreDataFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0ECF8C8275C3E6800F5F559 /* CoreDataFeedStore.swift */; };
 		A0ECF8CC275C400B00F5F559 /* FeedStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A0ECF8CA275C400B00F5F559 /* FeedStore.xcdatamodeld */; };
 		A0EFB3A9270DE0BB0077588E /* URLSessionHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EFB3A8270DE0BB0077588E /* URLSessionHTTPClient.swift */; };
+		A0F2E47527C692C300D9BACA /* MainQueueDispatchDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F2E47427C692C300D9BACA /* MainQueueDispatchDecorator.swift */; };
 		A0F4579E27A3148100665612 /* FeedImageCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F4579D27A3148100665612 /* FeedImageCellController.swift */; };
 		A0F457A127A3195900665612 /* FeedUIComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F457A027A3195900665612 /* FeedUIComposer.swift */; };
 /* End PBXBuildFile section */
@@ -184,6 +185,7 @@
 		A0ECF8C8275C3E6800F5F559 /* CoreDataFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStore.swift; sourceTree = "<group>"; };
 		A0ECF8CB275C400B00F5F559 /* FeedStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FeedStore.xcdatamodel; sourceTree = "<group>"; };
 		A0EFB3A8270DE0BB0077588E /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
+		A0F2E47427C692C300D9BACA /* MainQueueDispatchDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainQueueDispatchDecorator.swift; sourceTree = "<group>"; };
 		A0F4579D27A3148100665612 /* FeedImageCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCellController.swift; sourceTree = "<group>"; };
 		A0F457A027A3195900665612 /* FeedUIComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUIComposer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -532,6 +534,7 @@
 			isa = PBXGroup;
 			children = (
 				A0F457A027A3195900665612 /* FeedUIComposer.swift */,
+				A0F2E47427C692C300D9BACA /* MainQueueDispatchDecorator.swift */,
 			);
 			path = Composers;
 			sourceTree = "<group>";
@@ -796,6 +799,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0F2E47527C692C300D9BACA /* MainQueueDispatchDecorator.swift in Sources */,
 				A09943F927B1F38D0012658D /* FeedPresenter.swift in Sources */,
 				A010CB3D27A06FEE0070A9E4 /* FeedImageDataLoader.swift in Sources */,
 				A0AE16E827BD747300E9CFA7 /* UITableView+DequeueResuableCell.swift in Sources */,
