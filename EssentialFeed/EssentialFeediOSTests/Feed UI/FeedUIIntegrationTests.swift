@@ -281,8 +281,33 @@ final class FeedUIIntegrationTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
-    // MARK: - Helpers
+    func test_feedView_rendersErrorMessageOnFeedLoadingErrorUntilReloadIsInitiated() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        XCTAssertNil(sut.errorMessage, "Expected error message to be hidden while loading feed")
+        
+        loader.completeFeedLoadingWithError()
+        XCTAssertEqual(sut.errorMessage, localized("FEED_VIEW_CONNECTION_ERROR"), "Expected error message to be displayed on feed loading error")
+        
+        sut.simulateUserInitiatedFeedReload()
+        XCTAssertNil(sut.errorMessage, "Expected error message to hide when user initiated page reload")
+    }
     
+    func test_errorView_hidesOnTap() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        XCTAssertNil(sut.errorMessage, "Expected error message to be hidden while loading feed")
+        
+        loader.completeFeedLoadingWithError()
+        XCTAssertEqual(sut.errorMessage, localized("FEED_VIEW_CONNECTION_ERROR"), "Expected error message to be displayed on feed loading error")
+        
+        sut.simulateTapOnErrorView()
+        XCTAssertNil(sut.errorMessage, "Expected error message to hide on tap")
+    }
+    
+    // MARK: - Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
         let loader = LoaderSpy()
         let sut = FeedUIComposer.feedComposedWith(feedLoader: loader, imageLoader: loader)

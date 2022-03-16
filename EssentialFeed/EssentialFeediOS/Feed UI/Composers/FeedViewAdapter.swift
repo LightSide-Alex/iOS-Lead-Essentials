@@ -13,7 +13,7 @@ final class FeedViewAdapter: FeedView {
     
     init(controller: FeedViewController, imageLoader: FeedImageDataLoader) {
         self.controller = controller
-        self.imageLoader = imageLoader
+        self.imageLoader = imageLoader          
     }
     
     func display(_ viewModel: FeedViewModel) {
