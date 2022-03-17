@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A004AC9227B2E60800BE4ED4 /* FeedImagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004AC9127B2E60800BE4ED4 /* FeedImagePresenter.swift */; };
-		A00A5A2127E37BFE00A84378 /* Feed.strings in Resources */ = {isa = PBXBuildFile; fileRef = A00A5A2327E37BFE00A84378 /* Feed.strings */; };
+		A00A5A2727E37D9A00A84378 /* Feed Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A5A2627E37D9A00A84378 /* Feed Presenter.swift */; };
+		A00A5A2827E37E3E00A84378 /* Feed.strings in Resources */ = {isa = PBXBuildFile; fileRef = A00A5A2327E37BFE00A84378 /* Feed.strings */; };
 		A010CB2627A06C600070A9E4 /* UIImage+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A010CB2527A06C600070A9E4 /* UIImage+TestHelpers.swift */; };
 		A010CB2827A06CA90070A9E4 /* UIRefreshControl+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A010CB2727A06CA80070A9E4 /* UIRefreshControl+TestHelpers.swift */; };
 		A010CB2A27A06CCA0070A9E4 /* UIButton+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A010CB2927A06CCA0070A9E4 /* UIButton+TestHelpers.swift */; };
@@ -134,6 +135,7 @@
 		A00A5A2227E37BFE00A84378 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Feed.strings; sourceTree = "<group>"; };
 		A00A5A2427E37C0000A84378 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Feed.strings; sourceTree = "<group>"; };
 		A00A5A2527E37C0100A84378 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Feed.strings"; sourceTree = "<group>"; };
+		A00A5A2627E37D9A00A84378 /* Feed Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Feed Presenter.swift"; sourceTree = "<group>"; };
 		A010CB2527A06C600070A9E4 /* UIImage+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+TestHelpers.swift"; sourceTree = "<group>"; };
 		A010CB2727A06CA80070A9E4 /* UIRefreshControl+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+TestHelpers.swift"; sourceTree = "<group>"; };
 		A010CB2927A06CCA0070A9E4 /* UIButton+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+TestHelpers.swift"; sourceTree = "<group>"; };
@@ -550,6 +552,8 @@
 		A0C14AE427E28701003D04AC /* Feed Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				A00A5A2627E37D9A00A84378 /* Feed Presenter.swift */,
+				A00A5A2327E37BFE00A84378 /* Feed.strings */,
 			);
 			path = "Feed Presentation";
 			sourceTree = "<group>";
@@ -558,7 +562,6 @@
 			isa = PBXGroup;
 			children = (
 				A0C14AE627E28744003D04AC /* FeedPresenterTests.swift */,
-				A00A5A2327E37BFE00A84378 /* Feed.strings */,
 			);
 			path = "Feed Presentation";
 			sourceTree = "<group>";
@@ -824,6 +827,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A00A5A2827E37E3E00A84378 /* Feed.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,7 +835,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A00A5A2127E37BFE00A84378 /* Feed.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -920,6 +923,7 @@
 				A05F88F6272B9887008DD165 /* LocalFeedImage.swift in Sources */,
 				A0E118632729BC7500E6A710 /* FeedStore.swift in Sources */,
 				A0E118612729BC0500E6A710 /* LocalFeedLoader.swift in Sources */,
+				A00A5A2727E37D9A00A84378 /* Feed Presenter.swift in Sources */,
 				A0911F9C26EEE4A900BC4A60 /* HTTPClient.swift in Sources */,
 				A0AC460326DDDC040063B260 /* FeedImage.swift in Sources */,
 				A0EFB3A9270DE0BB0077588E /* URLSessionHTTPClient.swift in Sources */,
