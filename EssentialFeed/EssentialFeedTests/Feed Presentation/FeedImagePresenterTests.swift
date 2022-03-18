@@ -26,9 +26,11 @@ protocol FeedImageView {
 
 final class FeedImagePresenter {
     private let view: FeedImageView
+    private let imageTransformer: (Data) -> Any?
     
-    init(view: FeedImageView) {
+    init(view: FeedImageView, imageTransformer: @escaping (Data) -> Any?) {
         self.view = view
+        self.imageTransformer = imageTransformer
     }
     
     func didStartLoadingImageData(for model: FeedImage) {
@@ -75,7 +77,7 @@ class FeedImagePresenterTests: XCTestCase {
     }
     
     func test_didFinishLoadingImageData_displaysRetryErrorIfImageTransformationFails() {
-        let (sut, view) = makeSUT()
+        let (sut, view) = makeSUT(imageTransformer: fail)
         let image = uniqueImage()
         
         sut.didFinishLoadingImageData(with: anyImageData(), for: image)
@@ -90,13 +92,16 @@ class FeedImagePresenterTests: XCTestCase {
     }
     
     // MARK: - Helpers
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedImagePresenter, view: ViewSpy) {
-        let view = ViewSpy()
-        let sut = FeedImagePresenter(view: view)
-        trackMemoryLeak(for: view, file: file, line: line)
-        trackMemoryLeak(for: sut, file: file, line: line)
-        return (sut, view)
-    }
+    private func makeSUT(
+        imageTransformer: @escaping (Data) -> Any? = { _ in nil },
+        file: StaticString = #file,
+        line: UInt = #line) -> (sut: FeedImagePresenter, view: ViewSpy) {
+            let view = ViewSpy()
+            let sut = FeedImagePresenter(view: view, imageTransformer: imageTransformer)
+            trackMemoryLeak(for: view, file: file, line: line)
+            trackMemoryLeak(for: sut, file: file, line: line)
+            return (sut, view)
+        }
     
     private final class ViewSpy: FeedImageView {
         var messages = [FeedImageViewModel]()
@@ -108,5 +113,9 @@ class FeedImagePresenterTests: XCTestCase {
     
     private func anyImageData() -> Data {
         return UIImage.make(withColor: .red).pngData()!
+    }
+    
+    private var fail: (Data) -> Any? {
+        return { _ in nil }
     }
 }
