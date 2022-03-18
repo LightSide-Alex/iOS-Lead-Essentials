@@ -40,6 +40,16 @@ final class FeedImagePresenter {
             shouldRetry: false
         ))
     }
+    
+    func didFinishLoadingImageData(with data: Data, for model: FeedImage) {
+        view.display(FeedImageViewModel(
+            description: model.description,
+            location: model.location,
+            image: nil,
+            isLoading: false,
+            shouldRetry: true
+        ))
+    }
 }
 
 class FeedImagePresenterTests: XCTestCase {
@@ -56,15 +66,27 @@ class FeedImagePresenterTests: XCTestCase {
         sut.didStartLoadingImageData(for: image)
         
         XCTAssertEqual(view.messages.count, 1)
-        if case let .display(model) = view.messages.first {
-            XCTAssertEqual(model.description, image.description)
-            XCTAssertEqual(model.location, image.location)
-            XCTAssertEqual(model.isLoading, true)
-            XCTAssertEqual(model.shouldRetry, false)
-            XCTAssertNil(model.image)
-        } else {
-            XCTFail("Expected to receive display(model) message, but got \(view.messages) instead")
-        }
+        let model = view.messages.first
+        XCTAssertEqual(model?.description, image.description)
+        XCTAssertEqual(model?.location, image.location)
+        XCTAssertEqual(model?.isLoading, true)
+        XCTAssertEqual(model?.shouldRetry, false)
+        XCTAssertNil(model?.image)
+    }
+    
+    func test_didFinishLoadingImageData_displaysRetryErrorIfImageTransformationFails() {
+        let (sut, view) = makeSUT()
+        let image = uniqueImage()
+        
+        sut.didFinishLoadingImageData(with: anyImageData(), for: image)
+        
+        XCTAssertEqual(view.messages.count, 1)
+        let model = view.messages.first
+        XCTAssertEqual(model?.description, image.description)
+        XCTAssertEqual(model?.location, image.location)
+        XCTAssertEqual(model?.isLoading, false)
+        XCTAssertEqual(model?.shouldRetry, true)
+        XCTAssertNil(model?.image)
     }
     
     // MARK: - Helpers
@@ -77,14 +99,14 @@ class FeedImagePresenterTests: XCTestCase {
     }
     
     private final class ViewSpy: FeedImageView {
-        enum ReceivedMessages {
-            case display(model: FeedImageViewModel)
-        }
-        
-        var messages = [ReceivedMessages]()
+        var messages = [FeedImageViewModel]()
         
         func display(_ model: FeedImageViewModel) {
-            messages.append(.display(model: model))
+            messages.append(model)
         }
+    }
+    
+    private func anyImageData() -> Data {
+        return UIImage.make(withColor: .red).pngData()!
     }
 }
