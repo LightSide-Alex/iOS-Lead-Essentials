@@ -9,9 +9,9 @@ import XCTest
 import EssentialFeed
 
 final class RemoteFeedImageDataLoader {
-    private let client: Any
+    private let client: HTTPClient
     
-    init(client: Any) {
+    init(client: HTTPClient) {
         self.client = client
     }
 }
@@ -20,19 +20,15 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
     func test_init_doesNotPerformURLRequests() {
         let (_, spy) = makeSUT()
         
-        XCTAssertTrue(spy.messages.isEmpty)
+        XCTAssertTrue(spy.requestURLs.isEmpty)
     }
     
     // MARK: - Helpers
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: RemoteFeedImageDataLoader, view: ClientSpy) {
-        let clientSpy = ClientSpy()
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: RemoteFeedImageDataLoader, view: HTTPClientSpy) {
+        let clientSpy = HTTPClientSpy()
         let sut = RemoteFeedImageDataLoader(client: clientSpy)
         trackMemoryLeak(for: clientSpy, file: file, line: line)
         trackMemoryLeak(for: sut, file: file, line: line)
         return (sut, clientSpy)
-    }
-    
-    private final class ClientSpy {
-        var messages: [Any] = []
     }
 }
