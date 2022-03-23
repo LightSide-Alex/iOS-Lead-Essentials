@@ -114,6 +114,7 @@ class LoadFeedFromRemoteUseCaseTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
+    // MARK: - Helpers
     private func makeSUT(with url: URL = URL(string: "http://custom-url.com")!,
                          file: StaticString = #file,
                          line: UInt = #line) -> (RemoteFeedLoader, HTTPClientSpy) {
