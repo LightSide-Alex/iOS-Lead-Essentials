@@ -15,8 +15,11 @@ final class RemoteFeedImageDataLoader {
         self.client = client
     }
     
-    func loadImageData(from url: URL, completion: @escaping (Any) -> Void) {
-        client.getFrom(url: url) { _ in
+    func loadImageData(from url: URL, completion: @escaping (Error?) -> Void) {
+        client.getFrom(url: url) { result in
+            if case let .failure(error) = result {
+                completion(error)
+            }
         }
     }
 }
@@ -45,6 +48,22 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
         sut.loadImageData(from: requestURL) { _ in }
         
         XCTAssertEqual(spy.requestURLs, [requestURL, requestURL])
+    }
+    
+    func test_loadImageData_deliversErrorOnClientError() {
+        let (sut, spy) = makeSUT()
+        let expectedError = anyNSError()
+        let exp = expectation(description: "Wait for completion")
+        
+        var receivedError: NSError?
+        sut.loadImageData(from: anyURL()) { error in
+            receivedError = error as NSError?
+            exp.fulfill()
+        }
+        spy.complete(with: expectedError)
+        
+        wait(for: [exp], timeout: 1.0)
+        XCTAssertEqual(receivedError, expectedError)
     }
     
     // MARK: - Helpers
