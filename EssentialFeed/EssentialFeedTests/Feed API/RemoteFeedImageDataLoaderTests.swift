@@ -11,6 +11,10 @@ import EssentialFeed
 final class RemoteFeedImageDataLoader {
     private let client: HTTPClient
     
+    public enum Error: Swift.Error {
+        case invalidData
+    }
+    
     init(client: HTTPClient) {
         self.client = client
     }
@@ -18,8 +22,13 @@ final class RemoteFeedImageDataLoader {
     func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) {
         client.getFrom(url: url) { result in
             switch result {
-            case let .failure(error): completion(.failure(error))
-            default: break
+            case let .success((_, response)):
+                guard response.statusCode == 200 else {
+                    completion(.failure(Error.invalidData))
+                    return
+                }
+            case let .failure(error):
+                completion(.failure(error))
             }
         }
     }
@@ -27,36 +36,47 @@ final class RemoteFeedImageDataLoader {
 
 class RemoteFeedImageDataLoaderTests: XCTestCase {
     func test_init_doesNotPerformURLRequests() {
-        let (_, spy) = makeSUT()
+        let (_, view) = makeSUT()
         
-        XCTAssertTrue(spy.requestURLs.isEmpty)
+        XCTAssertTrue(view.requestURLs.isEmpty)
     }
     
     func test_loadImageData_requestsDataFromGivenURL() {
-        let (sut, spy) = makeSUT()
+        let (sut, view) = makeSUT()
         let requestURL = anyURL()
         
         sut.loadImageData(from: requestURL) { _ in }
         
-        XCTAssertEqual(spy.requestURLs, [requestURL])
+        XCTAssertEqual(view.requestURLs, [requestURL])
     }
     
     func test_loadImageData_requestsDataFromURLTwiceWhenInvokedTwice() {
-        let (sut, spy) = makeSUT()
+        let (sut, view) = makeSUT()
         let requestURL = anyURL()
         
         sut.loadImageData(from: requestURL) { _ in }
         sut.loadImageData(from: requestURL) { _ in }
         
-        XCTAssertEqual(spy.requestURLs, [requestURL, requestURL])
+        XCTAssertEqual(view.requestURLs, [requestURL, requestURL])
     }
     
     func test_loadImageData_deliversErrorOnClientError() {
-        let (sut, spy) = makeSUT()
+        let (sut, view) = makeSUT()
         let expectedError = anyNSError()
         
         expect(sut, toCompleteWith: .failure(expectedError)) {
-            spy.complete(with: expectedError)
+            view.complete(with: expectedError)
+        }
+    }
+    
+    func test_loadImageData_deliversInvalidDataErrorOnNon200Response() {
+        let (sut, view) = makeSUT()
+        let samples = [199, 201, 300, 400, 500]
+        
+        samples.enumerated().forEach { index, code in
+            expect(sut, toCompleteWith: failure(.invalidData)) {
+                view.complete(withStatusCode: code, data: Data(), at: index)
+            }
         }
     }
     
@@ -69,6 +89,10 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
         return (sut, clientSpy)
     }
     
+    private func failure(_ error: RemoteFeedImageDataLoader.Error) -> FeedImageDataLoader.Result {
+        return .failure(error)
+    }
+    
     private func expect(_ sut: RemoteFeedImageDataLoader,
                         toCompleteWith expectedResult: FeedImageDataLoader.Result,
                         on action: () -> Void,
@@ -78,6 +102,8 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
             switch (receivedResult, expectedResult) {
             case let (.success(receivedData), .success(expectedData)):
                 XCTAssertEqual(receivedData, expectedData, file: file, line: line)
+            case let (.failure(receivedError as RemoteFeedImageDataLoader.Error), .failure(expectedError as RemoteFeedImageDataLoader.Error)):
+                XCTAssertEqual(receivedError, expectedError, file: file, line: line)
             case let (.failure(receivedError as NSError), .failure(expectedError as NSError)):
                 XCTAssertEqual(receivedError, expectedError, file: file, line: line)
             default:
