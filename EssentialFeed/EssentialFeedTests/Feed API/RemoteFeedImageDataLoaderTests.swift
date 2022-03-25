@@ -46,65 +46,65 @@ final class RemoteFeedImageDataLoader {
 
 class RemoteFeedImageDataLoaderTests: XCTestCase {
     func test_init_doesNotPerformURLRequests() {
-        let (_, view) = makeSUT()
+        let (_, client) = makeSUT()
         
-        XCTAssertTrue(view.requestURLs.isEmpty)
+        XCTAssertTrue(client.requestURLs.isEmpty)
     }
     
     func test_loadImageData_requestsDataFromGivenURL() {
-        let (sut, view) = makeSUT()
+        let (sut, client) = makeSUT()
         let requestURL = anyURL()
         
         sut.loadImageData(from: requestURL) { _ in }
         
-        XCTAssertEqual(view.requestURLs, [requestURL])
+        XCTAssertEqual(client.requestURLs, [requestURL])
     }
     
     func test_loadImageData_requestsDataFromURLTwiceWhenInvokedTwice() {
-        let (sut, view) = makeSUT()
+        let (sut, client) = makeSUT()
         let requestURL = anyURL()
         
         sut.loadImageData(from: requestURL) { _ in }
         sut.loadImageData(from: requestURL) { _ in }
         
-        XCTAssertEqual(view.requestURLs, [requestURL, requestURL])
+        XCTAssertEqual(client.requestURLs, [requestURL, requestURL])
     }
     
     func test_loadImageData_deliversErrorOnClientError() {
-        let (sut, view) = makeSUT()
+        let (sut, client) = makeSUT()
         let expectedError = anyNSError()
         
         expect(sut, toCompleteWith: .failure(expectedError)) {
-            view.complete(with: expectedError)
+            client.complete(with: expectedError)
         }
     }
     
     func test_loadImageData_deliversInvalidDataErrorOnNon200Response() {
-        let (sut, view) = makeSUT()
+        let (sut, client) = makeSUT()
         let samples = [199, 201, 300, 400, 500]
         
         samples.enumerated().forEach { index, code in
             expect(sut, toCompleteWith: failure(.invalidData)) {
-                view.complete(withStatusCode: code, data: anyData(), at: index)
+                client.complete(withStatusCode: code, data: anyData(), at: index)
             }
         }
     }
     
     func test_loadImageData_deliversInvalidDataErrorOnEmptyData() {
-        let (sut, view) = makeSUT()
+        let (sut, client) = makeSUT()
         
         expect(sut, toCompleteWith: failure(.invalidData)) {
             let emptyData = Data()
-            view.complete(withStatusCode: 200, data: emptyData)
+            client.complete(withStatusCode: 200, data: emptyData)
         }
     }
     
     func test_loadImageData_deliversNonEmptyDataOn200Reposnse() {
-        let (sut, view) = makeSUT()
+        let (sut, client) = makeSUT()
         let nonEmptyData = Data("Non empty data".utf8)
         
         expect(sut, toCompleteWith: .success(nonEmptyData)) {
-            view.complete(withStatusCode: 200, data: nonEmptyData)
+            client.complete(withStatusCode: 200, data: nonEmptyData)
         }
     }
     
@@ -114,15 +114,26 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
 
         var capturedResults = [FeedImageDataLoader.Result]()
         sut?.loadImageData(from: anyURL()) { capturedResults.append($0) }
-
+        
         sut = nil
         client.complete(withStatusCode: 200, data: anyData())
-
+        
         XCTAssertTrue(capturedResults.isEmpty)
     }
     
+    func test_cancelLoadImageDataURLTask_cancelsClientURLRequest() {
+        let (sut, client) = makeSUT()
+        let url = URL(string: "https://a-given-url.com")!
+        
+        let task = sut.loadImageData(from: url) { _ in }
+        XCTAssertTrue(client.cancelledURLs.isEmpty, "Expected no cancelled URL request until task is cancelled")
+        
+        task.cancel()
+        XCTAssertEqual(client.cancelledURLs, [url], "Expected cancelled URL request after task is cancelled")
+    }
+    
     // MARK: - Helpers
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: RemoteFeedImageDataLoader, view: HTTPClientSpy) {
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: RemoteFeedImageDataLoader, client: HTTPClientSpy) {
         let clientSpy = HTTPClientSpy()
         let sut = RemoteFeedImageDataLoader(client: clientSpy)
         trackMemoryLeak(for: clientSpy, file: file, line: line)
