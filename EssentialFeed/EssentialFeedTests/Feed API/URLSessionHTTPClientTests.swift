@@ -29,7 +29,7 @@ class URLSessionHTTPClientTests: XCTestCase {
             XCTAssertEqual(request.httpMethod, "GET")
             exp.fulfill()
         }
-        makeSUT().getFrom(url: url) { _ in }
+        makeSUT().get(from: url) { _ in }
         
         wait(for: [exp], timeout: 1.0)
     }
@@ -78,7 +78,7 @@ class URLSessionHTTPClientTests: XCTestCase {
         let url = anyURL()
         let exp = expectation(description: "Wait for request")
         
-        let task = makeSUT().getFrom(url: url) { result in
+        let task = makeSUT().get(from: url) { result in
             switch result {
             case let .failure(error as NSError) where error.code == URLError.cancelled.rawValue:
                 break
@@ -143,7 +143,7 @@ class URLSessionHTTPClientTests: XCTestCase {
         let exp = expectation(description: "Wait for getFrom result")
         
         var receivedResult: HTTPClient.Result!
-        sut.getFrom(url: anyURL()) { result in
+        sut.get(from: anyURL()) { result in
             receivedResult = result
             exp.fulfill()
         }
