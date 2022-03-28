@@ -19,7 +19,7 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
         let (sut, client) = makeSUT()
         let requestURL = anyURL()
         
-        sut.loadImageData(from: requestURL) { _ in }
+        _ = sut.loadImageData(from: requestURL) { _ in }
         
         XCTAssertEqual(client.requestURLs, [requestURL])
     }
@@ -28,8 +28,8 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
         let (sut, client) = makeSUT()
         let requestURL = anyURL()
         
-        sut.loadImageData(from: requestURL) { _ in }
-        sut.loadImageData(from: requestURL) { _ in }
+        _ = sut.loadImageData(from: requestURL) { _ in }
+        _ = sut.loadImageData(from: requestURL) { _ in }
         
         XCTAssertEqual(client.requestURLs, [requestURL, requestURL])
     }
@@ -74,9 +74,9 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
     func test_loadImageData_doesNotDeliverResultAfterInstanceWasDeallocated() {
         let client = HTTPClientSpy()
         var sut: RemoteFeedImageDataLoader? = RemoteFeedImageDataLoader(client: client)
-
+        
         var capturedResults = [FeedImageDataLoader.Result]()
-        sut?.loadImageData(from: anyURL()) { capturedResults.append($0) }
+        _ = sut?.loadImageData(from: anyURL()) { capturedResults.append($0) }
         
         sut = nil
         client.complete(withStatusCode: 200, data: anyData())
@@ -128,7 +128,7 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
                         on action: () -> Void,
                         file: StaticString = #file, line: UInt = #line) {
         let exp = expectation(description: "Waiting for completion")
-        sut.loadImageData(from: anyURL()) { receivedResult in
+        _ = sut.loadImageData(from: anyURL()) { receivedResult in
             switch (receivedResult, expectedResult) {
             case let (.success(receivedData), .success(expectedData)):
                 XCTAssertEqual(receivedData, expectedData, file: file, line: line)
