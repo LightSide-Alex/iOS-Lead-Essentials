@@ -202,8 +202,4 @@ class RemoteFeedImageDataLoaderTests: XCTestCase {
         
         wait(for: [exp], timeout: 1.0)
     }
-    
-    private func anyData() -> Data {
-        return Data("Any data".utf8)
-    }
 }
