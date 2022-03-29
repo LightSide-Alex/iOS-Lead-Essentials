@@ -8,16 +8,41 @@
 import XCTest
 import EssentialFeed
 
-class LocalFeedImageDataLoader {
-    init(store: Any) {}
+protocol FeedImageDataStore {
+    func retrieve(dataForURL url: URL)
 }
 
+class LocalFeedImageDataLoader: FeedImageDataLoader {
+    private struct Task: FeedImageDataLoaderTask {
+        func cancel() { }
+    }
+    
+    private let store: FeedImageDataStore
+    
+    init(store: FeedImageDataStore) {
+        self.store = store
+    }
+    
+    func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
+        store.retrieve(dataForURL: url)
+        return Task()
+    }
+}
 
 class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
         
         XCTAssertTrue(store.receivedMessages.isEmpty)
+    }
+    
+    func test_loadImageData_requestsImageByUrl() {
+        let (sut, store) = makeSUT()
+        let requestUrl = anyURL()
+        
+        _ = sut.loadImageData(from: requestUrl) { _ in }
+        
+        XCTAssertEqual(store.receivedMessages, [.retrieve(dataFor: requestUrl)])
     }
     
     // MARK: - Helpers
@@ -29,7 +54,15 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
         return (sut, storeSpy)
     }
     
-    private final class FeedStoreSpy {
-        var receivedMessages: [Any] = []
+    private final class FeedStoreSpy: FeedImageDataStore {
+        enum Message: Equatable {
+            case retrieve(dataFor: URL)
+        }
+        
+        var receivedMessages: [Message] = []
+        
+        func retrieve(dataForURL url: URL) {
+            receivedMessages.append(.retrieve(dataFor: url))
+        }
     }
 }
