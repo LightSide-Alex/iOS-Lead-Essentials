@@ -79,6 +79,16 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
         XCTAssertTrue(received.isEmpty, "Expected no received results after instance was deallocated")
     }
     
+    func test_saveImageDataForURL_requestsDataInsertionForURL() {
+        let (sut, store) = makeSUT()
+        let dataToInsert = anyData()
+        let insertURL = anyURL()
+        
+        sut.save(dataToInsert, for: insertURL) { _ in }
+        
+        XCTAssertEqual(store.receivedMessages, [.insert(data: dataToInsert, for: insertURL)])
+    }
+    
     // MARK: - Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedStoreSpy) {
         let storeSpy = FeedStoreSpy()
@@ -117,6 +127,7 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
     private final class FeedStoreSpy: FeedImageDataStore {
         enum Message: Equatable {
             case retrieve(dataFor: URL)
+            case insert(data: Data, for: URL)
         }
         
         var receivedMessages: [Message] = []
@@ -128,6 +139,15 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
         }
         func completeRetrieve(with result: RetrievalResult, at index: Int = 0) {
             retrieveCompletions[index](result)
+        }
+        
+        private var insertCompletions: [InsertionCompletion] = []
+        func insert(_ data: Data, for url: URL, completion: @escaping InsertionCompletion) {
+            receivedMessages.append(.insert(data: data, for: url))
+            insertCompletions.append(completion)
+        }
+        func completeInsert(with result: InsertionResult, at index: Int = 0) {
+            insertCompletions[index](result)
         }
     }
 }
