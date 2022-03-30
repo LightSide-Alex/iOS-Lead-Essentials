@@ -107,8 +107,8 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
             switch (receivedResult, expectedResult) {
             case (let .success(received), let .success(expected)):
                 XCTAssertEqual(received, expected, file: file, line: line)
-            case (let .failure(receivedError as LocalFeedImageDataLoader.Error),
-                      let .failure(expectedError as LocalFeedImageDataLoader.Error)):
+            case (let .failure(receivedError as LocalFeedImageDataLoader.LoadError),
+                      let .failure(expectedError as LocalFeedImageDataLoader.LoadError)):
                 XCTAssertEqual(receivedError, expectedError, file: file, line: line)
             default:
                 XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
@@ -120,7 +120,7 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
     
-    private func failure(_ error: LocalFeedImageDataLoader.Error) -> FeedImageDataStore.RetrievalResult {
+    private func failure(_ error: LocalFeedImageDataLoader.LoadError) -> FeedImageDataStore.RetrievalResult {
         return .failure(error)
     }
     
