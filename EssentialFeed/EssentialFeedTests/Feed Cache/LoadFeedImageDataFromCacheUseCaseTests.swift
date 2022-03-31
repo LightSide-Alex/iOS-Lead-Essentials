@@ -79,22 +79,12 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
         XCTAssertTrue(received.isEmpty, "Expected no received results after instance was deallocated")
     }
     
-    func test_saveImageDataForURL_requestsDataInsertionForURL() {
-        let (sut, store) = makeSUT()
-        let dataToInsert = anyData()
-        let insertURL = anyURL()
-        
-        sut.save(dataToInsert, for: insertURL) { _ in }
-        
-        XCTAssertEqual(store.receivedMessages, [.insert(data: dataToInsert, for: insertURL)])
-    }
-    
     // MARK: - Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
         let storeSpy = FeedImageDataStoreSpy()
         let sut = LocalFeedImageDataLoader(store: storeSpy)
-        trackMemoryLeak(for: storeSpy, file: file, line: line)
-        trackMemoryLeak(for: sut, file: file, line: line)
+        trackForMemoryLeaks(for: storeSpy, file: file, line: line)
+        trackForMemoryLeaks(for: sut, file: file, line: line)
         return (sut, storeSpy)
     }
     
