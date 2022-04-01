@@ -1,5 +1,5 @@
 //
-//  XCTestCase+TrackMemoryLeak.swift
+//  XCTestCase+trackForMemoryLeaks.swift
 //  EssentialFeedTests
 //
 //  Created by Oleksandr Balan on 2021-09-23.

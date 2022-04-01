@@ -54,8 +54,8 @@ class EssentialFeedCacheIntegrationTests: XCTestCase {
         let storeURL = testSpecificStoreURL()
         let coreDataStore = try! CoreDataFeedStore(storeURL: storeURL)
         let sut = LocalFeedLoader(store: coreDataStore, currentDate: Date.init)
-        trackMemoryLeak(for: sut, file: file, line: line)
-        trackMemoryLeak(for: coreDataStore, file: file, line: line)
+        trackForMemoryLeaks(for: sut, file: file, line: line)
+        trackForMemoryLeaks(for: coreDataStore, file: file, line: line)
         
         return sut
     }
