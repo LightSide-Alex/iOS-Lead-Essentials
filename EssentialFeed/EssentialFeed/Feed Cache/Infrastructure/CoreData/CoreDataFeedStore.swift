@@ -8,16 +8,16 @@
 import CoreData
 
 public final class CoreDataFeedStore {
-    enum StoreError: Error {
-        case modelNotFound
-        case failedToLoadPersistentContainer(Error)
-    }
-    
     private static let modelName = "FeedStore"
     private static let model = NSManagedObjectModel.with(name: modelName, in: Bundle(for: CoreDataFeedStore.self))
     
     private let container: NSPersistentContainer
     private let context: NSManagedObjectContext
+    
+    enum StoreError: Error {
+        case modelNotFound
+        case failedToLoadPersistentContainer(Error)
+    }
     
     public init(storeURL: URL) throws {
         guard let model = CoreDataFeedStore.model else {
