@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A009AB9427FF88A7002E3B9B /* FeedLoaderWithFallbackComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009AB9327FF88A6002E3B9B /* FeedLoaderWithFallbackComposite.swift */; };
 		A078154927FC8EA300FF0253 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A078154827FC8EA300FF0253 /* AppDelegate.swift */; };
 		A078154B27FC8EA300FF0253 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A078154A27FC8EA300FF0253 /* SceneDelegate.swift */; };
 		A078154D27FC8EA300FF0253 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A078154C27FC8EA300FF0253 /* ViewController.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A009AB9327FF88A6002E3B9B /* FeedLoaderWithFallbackComposite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderWithFallbackComposite.swift; sourceTree = "<group>"; };
 		A078154527FC8EA300FF0253 /* EssentialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EssentialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A078154827FC8EA300FF0253 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A078154A27FC8EA300FF0253 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				A078154827FC8EA300FF0253 /* AppDelegate.swift */,
 				A078154A27FC8EA300FF0253 /* SceneDelegate.swift */,
 				A078154C27FC8EA300FF0253 /* ViewController.swift */,
+				A009AB9327FF88A6002E3B9B /* FeedLoaderWithFallbackComposite.swift */,
 				A078154E27FC8EA300FF0253 /* Main.storyboard */,
 				A078155127FC8EA400FF0253 /* Assets.xcassets */,
 				A078155327FC8EA400FF0253 /* LaunchScreen.storyboard */,
@@ -237,6 +240,7 @@
 			files = (
 				A078154D27FC8EA300FF0253 /* ViewController.swift in Sources */,
 				A078154927FC8EA300FF0253 /* AppDelegate.swift in Sources */,
+				A009AB9427FF88A7002E3B9B /* FeedLoaderWithFallbackComposite.swift in Sources */,
 				A078154B27FC8EA300FF0253 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
