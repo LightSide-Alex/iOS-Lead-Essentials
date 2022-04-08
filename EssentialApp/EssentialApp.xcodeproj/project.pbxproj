@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A009AB9427FF88A7002E3B9B /* FeedLoaderWithFallbackComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009AB9327FF88A6002E3B9B /* FeedLoaderWithFallbackComposite.swift */; };
+		A009AB9627FF890E002E3B9B /* FeedImageDataLoaderWithFallbackCompositeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009AB9527FF890E002E3B9B /* FeedImageDataLoaderWithFallbackCompositeTests.swift */; };
+		A009AB9927FF8967002E3B9B /* XCTestCase+trackForMemoryLeaks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009AB9827FF8967002E3B9B /* XCTestCase+trackForMemoryLeaks.swift */; };
 		A078154927FC8EA300FF0253 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A078154827FC8EA300FF0253 /* AppDelegate.swift */; };
 		A078154B27FC8EA300FF0253 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A078154A27FC8EA300FF0253 /* SceneDelegate.swift */; };
 		A078154D27FC8EA300FF0253 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A078154C27FC8EA300FF0253 /* ViewController.swift */; };
@@ -48,6 +50,8 @@
 
 /* Begin PBXFileReference section */
 		A009AB9327FF88A6002E3B9B /* FeedLoaderWithFallbackComposite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderWithFallbackComposite.swift; sourceTree = "<group>"; };
+		A009AB9527FF890E002E3B9B /* FeedImageDataLoaderWithFallbackCompositeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoaderWithFallbackCompositeTests.swift; sourceTree = "<group>"; };
+		A009AB9827FF8967002E3B9B /* XCTestCase+trackForMemoryLeaks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+trackForMemoryLeaks.swift"; sourceTree = "<group>"; };
 		A078154527FC8EA300FF0253 /* EssentialApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EssentialApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A078154827FC8EA300FF0253 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A078154A27FC8EA300FF0253 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +87,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A009AB9727FF894D002E3B9B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A009AB9827FF8967002E3B9B /* XCTestCase+trackForMemoryLeaks.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		A078153C27FC8EA300FF0253 = {
 			isa = PBXGroup;
 			children = (
@@ -120,7 +132,9 @@
 		A0A45F7627FF2954009B801A /* EssentialAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				A009AB9727FF894D002E3B9B /* Helpers */,
 				A0A45F9027FF2AA6009B801A /* FeedLoaderWithFallbackCompositeTests.swift */,
+				A009AB9527FF890E002E3B9B /* FeedImageDataLoaderWithFallbackCompositeTests.swift */,
 				A0A45F8F27FF2AA6009B801A /* EssentialAppTests-Bridging-Header.h */,
 			);
 			path = EssentialAppTests;
@@ -249,6 +263,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A009AB9927FF8967002E3B9B /* XCTestCase+trackForMemoryLeaks.swift in Sources */,
+				A009AB9627FF890E002E3B9B /* FeedImageDataLoaderWithFallbackCompositeTests.swift in Sources */,
 				A0A45F9127FF2AA6009B801A /* FeedLoaderWithFallbackCompositeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
