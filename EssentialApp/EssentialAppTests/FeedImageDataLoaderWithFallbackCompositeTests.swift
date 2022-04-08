@@ -9,6 +9,14 @@ import XCTest
 import EssentialFeed
 
 class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
+    final class Task: FeedImageDataLoaderTask {
+        var wrapped: FeedImageDataLoaderTask?
+        
+        func cancel() {
+            wrapped?.cancel()
+        }
+    }
+    
     let primary: FeedImageDataLoader
     let fallback: FeedImageDataLoader
     
@@ -18,14 +26,17 @@ class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
     }
     
     func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-        return primary.loadImageData(from: url) { [weak self] primaryLoadResult in
+        let task = Task()
+        task.wrapped = primary.loadImageData(from: url) { [weak self] primaryLoadResult in
             switch primaryLoadResult {
             case .success:
                 completion(primaryLoadResult)
             case .failure:
-                _ = self?.fallback.loadImageData(from: url, completion: completion)
+                task.wrapped = self?.fallback.loadImageData(from: url, completion: completion)
             }
         }
+        
+        return task
     }
 }
 
@@ -67,6 +78,18 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         
         XCTAssertEqual(primaryLoader.cancelledImageURLs, [url], "Expected to cancel URL from primary loader")
         XCTAssertTrue(fallbackLoader.cancelledImageURLs.isEmpty, "Expected no cancelled URLs in the fallback loader")
+    }
+    
+    func test_cancelLoadImageData_cancelsFallbackLoaderTaskAfterPrimaryLoaderFailure() {
+        let (sut, primaryLoader, fallbackLoader) = makeSUT()
+        let url = anyURL()
+        
+        let task = sut.loadImageData(from: url) { _ in }
+        primaryLoader.completeImageLoadingWithError()
+        task.cancel()
+        
+        XCTAssertTrue(primaryLoader.cancelledImageURLs.isEmpty, "Expected no cancelled URLs in the primary loader")
+        XCTAssertEqual(fallbackLoader.cancelledImageURLs, [url], "Expected to cancel URL from fallback loader")
     }
     
     // MARK: - Helpers
