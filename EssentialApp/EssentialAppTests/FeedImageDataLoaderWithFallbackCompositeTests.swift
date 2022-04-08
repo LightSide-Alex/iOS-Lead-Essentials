@@ -92,6 +92,15 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         XCTAssertEqual(fallbackLoader.cancelledImageURLs, [url], "Expected to cancel URL from fallback loader")
     }
     
+    func test_loadImageData_deliversPrimaryDataOnPrimaryLoaderSuccess() {
+        let (sut, primaryLoader, _) = makeSUT()
+        let primaryResult = anyData()
+        
+        expect(sut, toCompleteWith: .success(primaryResult)) {
+            primaryLoader.completeImageLoading(with: primaryResult)
+        }
+    }
+    
     // MARK: - Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedImageDataLoader, primary: LoaderSpy, fallback: LoaderSpy) {
         let primaryLoader = LoaderSpy()
@@ -103,5 +112,32 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         trackForMemoryLeaks(fallbackLoader, file: file, line: line)
         
         return (sut, primaryLoader, fallbackLoader)
-    }    
+    }
+    
+    private func expect(_ sut: FeedImageDataLoader,
+                        toCompleteWith expectedResult: FeedImageDataLoader.Result,
+                        on action: @escaping () -> Void,
+                        file: StaticString = #file,
+                        line: UInt = #line) {
+        let exp = expectation(description: "Waiting for loading completion")
+        
+        _ = sut.loadImageData(from: anyURL()) { receivedResult in
+            switch (receivedResult, expectedResult) {
+            case (let .success(receivedData), let .success(expectedData)):
+                XCTAssertEqual(receivedData, expectedData, file: file, line: line)
+            case (.failure, .failure):
+                break
+            default:
+                XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
+            }
+            exp.fulfill()
+        }
+        action()
+        
+        wait(for: [exp], timeout: 1.0)
+    }
+    
+    func anyData() -> Data {
+        return Data("Any data".utf8)
+    }
 }
