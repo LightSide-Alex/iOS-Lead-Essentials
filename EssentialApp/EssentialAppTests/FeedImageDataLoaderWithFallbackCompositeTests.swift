@@ -24,10 +24,20 @@ class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
 
 class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     func test_init_doesNotLoadImageData() {
-        let (_, primary, fallback) = makeSUT()
+        let (_, primaryLoader, fallbackLoader) = makeSUT()
         
-        XCTAssertTrue(primary.loadedUrls.isEmpty)
-        XCTAssertTrue(fallback.loadedUrls.isEmpty)
+        XCTAssertTrue(primaryLoader.loadedURLs.isEmpty)
+        XCTAssertTrue(fallbackLoader.loadedURLs.isEmpty)
+    }
+    
+    func test_loadImageData_loadsFromPrimaryLoaderFirst() {
+        let (sut, primaryLoader, fallbackLoader) = makeSUT()
+        let url = anyURL()
+        
+        _ = sut.loadImageData(from: url) { _ in }
+        
+        XCTAssertEqual(primaryLoader.loadedURLs, [url], "Expected to load URL from primary loader")
+        XCTAssertTrue(fallbackLoader.loadedURLs.isEmpty, "Expected no loaded URLs in the fallback loader")
     }
     
     // MARK: - Helpers
@@ -49,9 +59,9 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
             func cancel() {}
         }
         
-        private(set) var loadedUrls: [URL] = []
+        private(set) var loadedURLs: [URL] = []
         func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-            loadedUrls.append(url)
+            loadedURLs.append(url)
             return TaskSpy()
         }
     }
