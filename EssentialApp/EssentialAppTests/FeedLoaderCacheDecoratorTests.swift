@@ -56,7 +56,17 @@ class FeedLoaderCacheDecoratorTests: XCTestCase, FeedLoaderTestCase {
         let sut = makeSUT(with: .success(feed), cache: cache)
         
         sut.load { _ in }
+        
         XCTAssertEqual(cache.receivedMessages, [.save(feed)])
+    }
+    
+    func test_load_doesNotCacheOnLoaderFailure() {
+        let cache = FeedCacheSpy()
+        let sut = makeSUT(with: .failure(anyNSError()), cache: cache)
+        
+        sut.load { _ in }
+        
+        XCTAssertTrue(cache.receivedMessages.isEmpty, "Expected not to cache feed on load error")
     }
     
     // MARK: - Helpers
