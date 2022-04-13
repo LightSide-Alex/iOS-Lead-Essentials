@@ -124,8 +124,4 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
         
         wait(for: [exp], timeout: 1.0)
     }
-    
-    func anyData() -> Data {
-        return Data("Any data".utf8)
-    }
 }
