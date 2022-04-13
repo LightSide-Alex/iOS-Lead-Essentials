@@ -9,7 +9,7 @@ import XCTest
 import EssentialFeed
 import EssentialApp
 
-class FeedLoaderWithFallbackCompositeTests: XCTestCase {
+class FeedLoaderWithFallbackCompositeTests: XCTestCase, FeedLoaderTestCase {
     func test_load_loadsFromPrimarySourceOnPrimarySuccess() {
         let primaryFeed = uniqueImageFeed()
         let fallbackFeed = uniqueImageFeed()
@@ -61,13 +61,5 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         }
         
         wait(for: [exp], timeout: 1.0)
-    }
-    
-    private func uniqueImageFeed() -> [FeedImage] {
-        return [uniqueImage(), uniqueImage()]
-    }
-    
-    private func uniqueImage() -> FeedImage {
-        FeedImage(id: UUID(), description: "any", location: "any", url: anyURL())
     }
 }

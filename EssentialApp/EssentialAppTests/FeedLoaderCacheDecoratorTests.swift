@@ -20,7 +20,7 @@ final class FeedLoaderCacheDecorator: FeedLoader {
     }
 }
 
-class FeedLoaderCacheDecoratorTests: XCTestCase {
+class FeedLoaderCacheDecoratorTests: XCTestCase, FeedLoaderTestCase {
     func test_load_deliversFeedOnLoaderSuccess() {
         let loadSuccess: FeedLoader.Result = .success(uniqueImageFeed())
         let sut = makeSUT(with: loadSuccess)
@@ -66,13 +66,5 @@ class FeedLoaderCacheDecoratorTests: XCTestCase {
         }
         
         wait(for: [exp], timeout: 1.0)
-    }
-    
-    private func uniqueImageFeed() -> [FeedImage] {
-        return [uniqueImage(), uniqueImage()]
-    }
-    
-    private func uniqueImage() -> FeedImage {
-        FeedImage(id: UUID(), description: "any", location: "any", url: anyURL())
     }
 }
