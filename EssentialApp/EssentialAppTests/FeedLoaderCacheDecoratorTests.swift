@@ -22,37 +22,32 @@ final class FeedLoaderCacheDecorator: FeedLoader {
 
 class FeedLoaderCacheDecoratorTests: XCTestCase {
     func test_load_deliversFeedOnLoaderSuccess() {
-        let (sut, loader) = makeSUT()
-        let feed = uniqueImageFeed()
+        let loadSuccess: FeedLoader.Result = .success(uniqueImageFeed())
+        let sut = makeSUT(with: loadSuccess)
         
-        expect(sut, toCompleteWith: .success(feed)) {
-            loader.complete(with: .success(feed))
-        }
+        expect(sut, toCompleteWith: loadSuccess)
     }
     
     func test_load_deliversErrorOnLoaderFailure() {
-        let (sut, loader) = makeSUT()
         let loadFailure: FeedLoader.Result = .failure(anyNSError())
+        let sut = makeSUT(with: loadFailure)
         
-        expect(sut, toCompleteWith: loadFailure) {
-            loader.complete(with: loadFailure)
-        }
+        expect(sut, toCompleteWith: loadFailure)
     }
     
     // MARK: - Helpers
-    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedLoaderCacheDecorator, loader: FeedLoaderSpy) {
-        let loader = FeedLoaderSpy()
+    private func makeSUT(with result: FeedLoader.Result, file: StaticString = #file, line: UInt = #line) -> FeedLoaderCacheDecorator {
+        let loader = FeedLoaderStub(completionResult: result)
         let sut = FeedLoaderCacheDecorator(decoratee: loader)
         
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         
-        return (sut, loader)
+        return sut
     }
     
     private func expect(_ sut: FeedLoaderCacheDecorator,
                         toCompleteWith expectedResult: FeedLoader.Result,
-                        on action: @escaping () -> Void,
                         file: StaticString = #file,
                         line: UInt = #line) {
         let exp = expectation(description: "Waiting for load completion")
@@ -69,19 +64,8 @@ class FeedLoaderCacheDecoratorTests: XCTestCase {
             }
             exp.fulfill()
         }
-        action()
         
         wait(for: [exp], timeout: 1.0)
-    }
-    
-    private final class FeedLoaderSpy: FeedLoader {
-        private var completions: [(FeedLoader.Result) -> Void] = []
-        func load(completion: @escaping (FeedLoader.Result) -> Void) {
-            completions.append(completion)
-        }
-        func complete(with result: FeedLoader.Result, at index: Int = 0) {
-            completions[index](result)
-        }
     }
     
     private func uniqueImageFeed() -> [FeedImage] {
