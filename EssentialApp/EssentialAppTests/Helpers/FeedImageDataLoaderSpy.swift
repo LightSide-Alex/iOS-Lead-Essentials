@@ -7,7 +7,7 @@
 
 import EssentialFeed
 
-class LoaderSpy: FeedImageDataLoader {
+class FeedImageDataLoaderSpy: FeedImageDataLoader {
     // MARK: - FeedImageDataLoader
     private struct TaskSpy: FeedImageDataLoaderTask {
         let cancelCallback: () -> Void
