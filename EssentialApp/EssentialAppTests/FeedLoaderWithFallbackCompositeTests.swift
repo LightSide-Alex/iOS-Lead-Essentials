@@ -9,7 +9,7 @@ import XCTest
 import EssentialFeed
 import EssentialApp
 
-class FeedLoaderWithFallbackCompositeTests: XCTestCase {
+class FeedLoaderWithFallbackCompositeTests: XCTestCase, FeedLoaderTestCase {
     func test_load_loadsFromPrimarySourceOnPrimarySuccess() {
         let primaryFeed = uniqueImageFeed()
         let fallbackFeed = uniqueImageFeed()
@@ -42,44 +42,5 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         trackForMemoryLeaks(fallbackLoader, file: file, line: line)
         
         return sut
-    }
-    
-    private func expect(_ sut: FeedLoader, toCompleteWith expectedResult: FeedLoader.Result, file: StaticString = #file, line: UInt = #line) {
-        let exp = expectation(description: "Waiting for load completion")
-        
-        sut.load { receivedResult in
-            switch (receivedResult, expectedResult) {
-            case (let .success(receivedFeed), let .success(expectedFeed)):
-                XCTAssertEqual(receivedFeed, expectedFeed, file: file, line: line)
-            case (let .failure(receivedError as NSError), let .failure(expectedError as NSError)):
-                XCTAssertEqual(receivedError.code, expectedError.code, file: file, line: line)
-                XCTAssertEqual(receivedError.domain, expectedError.domain, file: file, line: line)
-            default:
-                XCTFail("Expected \(expectedResult), got \(receivedResult) instead", file: file, line: line)
-            }
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1.0)
-    }
-    
-    private class FeedLoaderStub: FeedLoader {
-        private let completionResult: FeedLoader.Result
-        
-        init(completionResult: FeedLoader.Result) {
-            self.completionResult = completionResult
-        }
-        
-        func load(completion: @escaping (FeedLoader.Result) -> Void) {
-            completion(completionResult)
-        }
-    }
-    
-    private func uniqueImageFeed() -> [FeedImage] {
-        return [uniqueImage(), uniqueImage()]
-    }
-    
-    private func uniqueImage() -> FeedImage {
-        FeedImage(id: UUID(), description: "any", location: "any", url: anyURL())
     }
 }
