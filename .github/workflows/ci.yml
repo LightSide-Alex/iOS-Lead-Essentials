@@ -25,5 +25,4 @@ jobs:
     
     - name: Build and test at iPhone 11 Pro
       run: |
-        cd EssentialFeed
-        xcodebuild clean build test -project EssentialFeed.xcodeproj -scheme CI_iOS -destination "platform=iOS Simulator,name=iPhone 11 Pro" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+        xcodebuild clean build test -workspace EssentialWorkspace.xcworkspace -scheme CI_iOS -destination "platform=iOS Simulator,name=iPhone 11 Pro" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
