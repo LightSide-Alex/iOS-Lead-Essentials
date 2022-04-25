@@ -8,6 +8,7 @@
 import XCTest
 import EssentialFeed
 import EssentialFeediOS
+import EssentialApp
 
 extension FeedUIIntegrationTests {
     func assertThat(_ sut: FeedViewController, isRendering feed: [FeedImage], file: StaticString = #file, line: UInt = #line) {
