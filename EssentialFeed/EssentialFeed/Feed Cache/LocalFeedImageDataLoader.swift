@@ -55,7 +55,7 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
 }
 
 extension LocalFeedImageDataLoader: FeedImageDataCache {
-    enum SaveError: Error {
+    public enum SaveError: Error {
         case failed
     }
     
