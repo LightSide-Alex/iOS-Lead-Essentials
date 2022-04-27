@@ -11,14 +11,6 @@ import EssentialFeed
 protocol FeedLoaderTestCase: XCTestCase {}
 
 extension FeedLoaderTestCase {
-    func uniqueImageFeed() -> [FeedImage] {
-        return [uniqueImage(), uniqueImage()]
-    }
-    
-    func uniqueImage() -> FeedImage {
-        FeedImage(id: UUID(), description: "any", location: "any", url: anyURL())
-    }
-    
     func expect(_ sut: FeedLoader,
                 toCompleteWith expectedResult: FeedLoader.Result,
                 file: StaticString = #file,

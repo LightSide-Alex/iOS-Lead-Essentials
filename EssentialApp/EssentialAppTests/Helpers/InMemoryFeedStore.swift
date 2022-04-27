@@ -8,8 +8,12 @@
 import EssentialFeed
 
 class InMemoryFeedStore: FeedStore, FeedImageDataStore {
-    private var feedCache: CachedFeed?
+    private(set) var feedCache: CachedFeed?
     private var feedImageDataCache: [URL: Data] = [:]
+    
+    private init(feedCache: CachedFeed? = nil) {
+        self.feedCache = feedCache
+    }
     
     func deleteCachedFeed(completion: @escaping FeedStore.DeletionCompletion) {
         feedCache = nil
@@ -36,5 +40,13 @@ class InMemoryFeedStore: FeedStore, FeedImageDataStore {
     
     static var empty: InMemoryFeedStore {
         InMemoryFeedStore()
+    }
+    
+    static var withExpiredFeedCache: InMemoryFeedStore {
+        InMemoryFeedStore(feedCache: CachedFeed(feed: [], timestamp: Date.distantPast))
+    }
+    
+    static var withNonExpiredFeedCache: InMemoryFeedStore {
+        InMemoryFeedStore(feedCache: CachedFeed(feed: [], timestamp: Date()))
     }
 }
