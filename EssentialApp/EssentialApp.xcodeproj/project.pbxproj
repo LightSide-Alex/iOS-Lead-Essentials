@@ -33,6 +33,7 @@
 		A078154D27FC8EA300FF0253 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A078154C27FC8EA300FF0253 /* ViewController.swift */; };
 		A078155227FC8EA400FF0253 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A078155127FC8EA400FF0253 /* Assets.xcassets */; };
 		A078155527FC8EA400FF0253 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A078155327FC8EA400FF0253 /* LaunchScreen.storyboard */; };
+		A08E72A3282C0335004782DE /* CombineHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08E72A2282C0335004782DE /* CombineHelpers.swift */; };
 		A0A51EBB28183C7B00E8AA35 /* HTTPClientStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A51EBA28183C7B00E8AA35 /* HTTPClientStub.swift */; };
 		A0A51EBD28183CB000E8AA35 /* InMemoryFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A51EBC28183CB000E8AA35 /* InMemoryFeedStore.swift */; };
 		A0BB62C02807180400204EB4 /* FeedLoaderStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BB62BF2807180400204EB4 /* FeedLoaderStub.swift */; };
@@ -98,6 +99,7 @@
 		A078155127FC8EA400FF0253 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A078155427FC8EA400FF0253 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A078155627FC8EA400FF0253 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A08E72A2282C0335004782DE /* CombineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelpers.swift; sourceTree = "<group>"; };
 		A0A45F7527FF2954009B801A /* EssentialAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0A45F8F27FF2AA6009B801A /* EssentialAppTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EssentialAppTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A0A51EBA28183C7B00E8AA35 /* HTTPClientStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientStub.swift; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 				A078154827FC8EA300FF0253 /* AppDelegate.swift */,
 				A078154A27FC8EA300FF0253 /* SceneDelegate.swift */,
 				A078154C27FC8EA300FF0253 /* ViewController.swift */,
+				A08E72A2282C0335004782DE /* CombineHelpers.swift */,
 				A078155127FC8EA400FF0253 /* Assets.xcassets */,
 				A078155327FC8EA400FF0253 /* LaunchScreen.storyboard */,
 				A078155627FC8EA400FF0253 /* Info.plist */,
@@ -364,6 +367,7 @@
 			files = (
 				A044FA3C2816F59E00DA2A2A /* FeedViewAdapter.swift in Sources */,
 				A078154D27FC8EA300FF0253 /* ViewController.swift in Sources */,
+				A08E72A3282C0335004782DE /* CombineHelpers.swift in Sources */,
 				A044FA382816F59E00DA2A2A /* FeedImageDataLoaderPresentationAdapter.swift in Sources */,
 				A078154927FC8EA300FF0253 /* AppDelegate.swift in Sources */,
 				A078154B27FC8EA300FF0253 /* SceneDelegate.swift in Sources */,
