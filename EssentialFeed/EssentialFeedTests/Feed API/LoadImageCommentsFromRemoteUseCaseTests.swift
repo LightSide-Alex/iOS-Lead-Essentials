@@ -40,40 +40,46 @@ class LoadImageCommentsFromRemoteUseCaseTests: XCTestCase {
         }
     }
     
-    func test_load_deliversErrorOnNon200HTTPResponse() {
+    func test_load_deliversErrorOnNon2xxHTTPResponse() {
         let (sut, client) = makeSUT()
         
-        [199, 201, 300, 400, 500].enumerated().forEach { index, code in
+        [199, 300, 400, 500].enumerated().forEach { index, code in
             expect(sut, completeWith: failure(.invalidData)) {
                 client.complete(withStatusCode: code, data: makeItemsJSON([]), at: index)
             }
         }
     }
     
-    func test_load_deliversErrorOn200HTTPResponseWithInvalidJSON() {
+    func test_load_deliversErrorOn2xxHTTPResponseWithInvalidJSON() {
         let (sut, client) = makeSUT()
         let json = "Invalid JSON".utf8
-        expect(sut, completeWith: failure(.invalidData)) {
-            client.complete(withStatusCode: 200, data: Data(json))
+        [200, 201, 250, 299].enumerated().forEach { index, code in
+            expect(sut, completeWith: failure(.invalidData)) {
+                client.complete(withStatusCode: 200, data: Data(json), at: index)
+            }
         }
     }
     
-    func test_load_deliversNoItemsOn200HTTPResponseWithEmptyJSONList() {
+    func test_load_deliversNoItemsOn2xxHTTPResponseWithEmptyJSONList() {
         let (sut, client) = makeSUT()
-        expect(sut, completeWith: .success([])) {
-            client.complete(withStatusCode: 200, data: makeItemsJSON([]))
+        [200, 201, 250, 299].enumerated().forEach { index, code in
+            expect(sut, completeWith: .success([])) {
+                client.complete(withStatusCode: 200, data: makeItemsJSON([]), at: index)
+            }
         }
     }
     
-    func test_load_deliversItemsOn200HTTPResponseWithNonEmptyJSONList() {
+    func test_load_deliversItemsOn2xxHTTPResponseWithNonEmptyJSONList() {
         let (sut, client) = makeSUT()
         let (item1, jsonItem1) = makeFeedItem()
         let (item2, jsonItem2) = makeFeedItem(description: "Description", location: "Location")
         let (item3, jsonItem3) = makeFeedItem(description: "The whole new description")
         
-        expect(sut, completeWith: .success([item1, item2, item3])) {
-            let json = makeItemsJSON([jsonItem1, jsonItem2, jsonItem3])
-            client.complete(withStatusCode: 200, data: json)
+        [200, 201, 250, 299].enumerated().forEach { index, code in
+            expect(sut, completeWith: .success([item1, item2, item3])) {
+                let json = makeItemsJSON([jsonItem1, jsonItem2, jsonItem3])
+                client.complete(withStatusCode: 200, data: json, at: index)
+            }
         }
     }
     
