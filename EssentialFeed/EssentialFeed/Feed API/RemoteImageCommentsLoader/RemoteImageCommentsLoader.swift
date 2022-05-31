@@ -7,8 +7,8 @@
 
 import Foundation
 
-public final class RemoteImageCommentsLoader: FeedLoader {
-    public typealias Result = FeedLoader.Result
+public final class RemoteImageCommentsLoader {
+    public typealias Result = Swift.Result<[ImageComment], Swift.Error>
     
     private let url: URL
     private let client: HTTPClient
@@ -37,8 +37,8 @@ public final class RemoteImageCommentsLoader: FeedLoader {
     
     private static func map(_ data: Data, _ response: HTTPURLResponse) -> Result {
         do {
-            let items = try ImageCommentsMapper.map(data, response)
-            return .success(items.toModels())
+            let items = try ImageCommentsMapper.map(data, from: response)
+            return .success(items)
         } catch {
             return .failure(error)
         }

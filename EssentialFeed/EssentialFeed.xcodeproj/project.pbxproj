@@ -332,9 +332,9 @@
 			children = (
 				A0A8E56D27EB65CA00E3018A /* Helpers */,
 				A06B7A9926E074FB00761FC3 /* LoadFeedFromRemoteUseCaseTests.swift */,
+				A0A8E56A27EB645900E3018A /* LoadFeedImageDataFromRemoteUseCaseTests.swift */,
 				A0930ECB28466BC300239868 /* LoadImageCommentsFromRemoteUseCaseTests.swift */,
 				A0615BCB26F937D500B76545 /* URLSessionHTTPClientTests.swift */,
-				A0A8E56A27EB645900E3018A /* LoadFeedImageDataFromRemoteUseCaseTests.swift */,
 			);
 			path = "Feed API";
 			sourceTree = "<group>";
@@ -440,6 +440,7 @@
 			isa = PBXGroup;
 			children = (
 				A0AC460226DDDC040063B260 /* FeedImage.swift */,
+				A0930ECD28467D5600239868 /* ImageComment.swift */,
 				A082018526DF1B0D00BDFA5E /* FeedLoader.swift */,
 				A010CB3C27A06FEE0070A9E4 /* FeedImageDataLoader.swift */,
 				A07E961F280772B7001236F7 /* FeedCache.swift */,
@@ -471,7 +472,6 @@
 			children = (
 				A0930EC728466B3C00239868 /* RemoteImageCommentsLoader.swift */,
 				A0930EC928466B5100239868 /* ImageCommentsMapper.swift */,
-				A0930ECD28467D5600239868 /* ImageComment.swift */,
 			);
 			path = RemoteImageCommentsLoader;
 			sourceTree = "<group>";
