@@ -9,6 +9,7 @@ import UIKit
 import CoreData
 import EssentialFeed
 import EssentialFeediOS
+import Combine
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -59,10 +60,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func makeRemoteFeedLoaderWithLocalFallback() -> FeedLoader.Publisher {
         let remoteURL = URL(string: "https://static1.squarespace.com/static/5891c5b8d1758ec68ef5dbc2/t/5db4155a4fbade21d17ecd28/1572083034355/essential_app_feed.json")!
-        let remoteFeedLoader = RemoteLoader(url: remoteURL, client: httpClient, mapper: FeedItemsMapper.map)
         
-        return remoteFeedLoader
-            .loadPublisher()
+        return httpClient
+            .getPublisher(url: remoteURL)
+            .tryMap(FeedItemsMapper.map)
             .cache(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
     }
@@ -75,10 +76,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .loadImageDataPublisher(url: url)
             .fallback {
                 remoteImageLoader
-                .loadImageDataPublisher(url: url)
-                .cache(to: localImageLoader, using: url)
+                    .loadImageDataPublisher(url: url)
+                    .cache(to: localImageLoader, using: url)
             }
     }
 }
-
-extension RemoteLoader: FeedLoader where Resource == [FeedImage] {}

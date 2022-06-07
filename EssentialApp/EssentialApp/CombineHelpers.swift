@@ -9,6 +9,24 @@ import Combine
 import Foundation
 import EssentialFeed
 
+public extension HTTPClient {
+    typealias Publisher = AnyPublisher<(Data, HTTPURLResponse), Error>
+    
+    func getPublisher(url: URL) -> Publisher {
+        var task: HTTPClientTask?
+        
+        return Deferred {
+            Future { promise in
+                task = self.get(from: url) { result in
+                    promise(result)
+                }
+            }
+        }
+        .handleEvents(receiveCancel: { task?.cancel() })
+        .eraseToAnyPublisher()
+    }
+}
+
 public extension FeedImageDataLoader {
     typealias Publisher = AnyPublisher<Data, Error>
     
@@ -29,7 +47,7 @@ public extension FeedImageDataLoader {
     }
 }
 
-extension AnyPublisher where Output == Data {
+extension Publisher where Output == Data {
     func cache(to feedImageDataCache: FeedImageDataCache, using url: URL) -> AnyPublisher<Data, Failure> {
         handleEvents(receiveOutput: { feedImageDataCache.saveIgnoringResult($0, for: url) }).eraseToAnyPublisher()
     }
@@ -52,7 +70,7 @@ public extension FeedLoader {
     }
 }
 
-extension AnyPublisher where Output == [FeedImage] {
+extension Publisher where Output == [FeedImage] {
     func cache(to feedCache: FeedCache) -> AnyPublisher<[FeedImage], Failure> {
         handleEvents(receiveOutput: feedCache.saveIgnoringResult).eraseToAnyPublisher()
     }
