@@ -8,24 +8,26 @@
 import XCTest
 import EssentialFeed
 
-class EssentialFeedApiEndToEndTests: XCTestCase {
+class EssentialFeedAPIEndToEndTests: XCTestCase {
     
     func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() {
         switch getFeedResult() {
-        case let .success(feed):
-            XCTAssertEqual(feed.count, 8, "Expected 8 feed in the test account feed")
-            XCTAssertEqual(feed[0], expectedImage(at: 0))
-            XCTAssertEqual(feed[1], expectedImage(at: 1))
-            XCTAssertEqual(feed[2], expectedImage(at: 2))
-            XCTAssertEqual(feed[3], expectedImage(at: 3))
-            XCTAssertEqual(feed[4], expectedImage(at: 4))
-            XCTAssertEqual(feed[5], expectedImage(at: 5))
-            XCTAssertEqual(feed[6], expectedImage(at: 6))
-            XCTAssertEqual(feed[7], expectedImage(at: 7))
-        case let .failure(error):
-            XCTFail("Expected success, but got \(error) instead")
+        case let .success(imageFeed)?:
+            XCTAssertEqual(imageFeed.count, 8, "Expected 8 images in the test account image feed")
+            XCTAssertEqual(imageFeed[0], expectedImage(at: 0))
+            XCTAssertEqual(imageFeed[1], expectedImage(at: 1))
+            XCTAssertEqual(imageFeed[2], expectedImage(at: 2))
+            XCTAssertEqual(imageFeed[3], expectedImage(at: 3))
+            XCTAssertEqual(imageFeed[4], expectedImage(at: 4))
+            XCTAssertEqual(imageFeed[5], expectedImage(at: 5))
+            XCTAssertEqual(imageFeed[6], expectedImage(at: 6))
+            XCTAssertEqual(imageFeed[7], expectedImage(at: 7))
+            
+        case let .failure(error)?:
+            XCTFail("Expected successful feed result, got \(error) instead")
+            
         default:
-            XCTFail("Expected success, but got no result instead")
+            XCTFail("Expected successful feed result, got no result instead")
         }
     }
     
@@ -43,6 +45,7 @@ class EssentialFeedApiEndToEndTests: XCTestCase {
     }
     
     // MARK: - Helpers
+    
     private func getFeedResult(file: StaticString = #file, line: UInt = #line) -> Swift.Result<[FeedImage], Error>? {
         let client = ephemeralClient()
         let exp = expectation(description: "Wait for load completion")
@@ -64,15 +67,19 @@ class EssentialFeedApiEndToEndTests: XCTestCase {
     }
     
     private func getFeedImageDataResult(file: StaticString = #file, line: UInt = #line) -> FeedImageDataLoader.Result? {
+        let client = ephemeralClient()
         let url = feedTestServerURL.appendingPathComponent("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
-        let sut = RemoteFeedImageDataLoader(client: ephemeralClient(file: file, line: line))
-        
-        trackForMemoryLeaks(for: sut, file: file, line: line)
-        
         let exp = expectation(description: "Wait for load completion")
+        
         var receivedResult: FeedImageDataLoader.Result?
-        _ = sut.loadImageData(from: url) { result in
-            receivedResult = result
+        client.get(from: url) { result in
+            receivedResult = result.flatMap { (data, response) in
+                do {
+                    return .success(try FeedImageDataMapper.map(data, from: response))
+                } catch {
+                    return .failure(error)
+                }
+            }
             exp.fulfill()
         }
         wait(for: [exp], timeout: 5.0)
@@ -80,14 +87,14 @@ class EssentialFeedApiEndToEndTests: XCTestCase {
         return receivedResult
     }
     
+    private var feedTestServerURL: URL {
+        return URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
+    }
+    
     private func ephemeralClient(file: StaticString = #file, line: UInt = #line) -> HTTPClient {
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         trackForMemoryLeaks(for: client, file: file, line: line)
         return client
-    }
-    
-    private var feedTestServerURL: URL {
-        return URL(string: "https://essentialdeveloper.com/feed-case-study/test-api/feed")!
     }
     
     private func expectedImage(at index: Int) -> FeedImage {
