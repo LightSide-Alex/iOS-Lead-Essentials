@@ -289,7 +289,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertNil(sut.errorMessage, "Expected error message to be hidden while loading feed")
         
         loader.completeFeedLoadingWithError()
-        XCTAssertEqual(sut.errorMessage, localized("FEED_VIEW_CONNECTION_ERROR"), "Expected error message to be displayed on feed loading error")
+        XCTAssertEqual(sut.errorMessage, localized("GENERIC_CONNECTION_ERROR"), "Expected error message to be displayed on feed loading error")
         
         sut.simulateUserInitiatedFeedReload()
         XCTAssertNil(sut.errorMessage, "Expected error message to hide when user initiated page reload")
@@ -318,7 +318,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertNil(sut.errorMessage, "Expected error message to be hidden while loading feed")
         
         loader.completeFeedLoadingWithError()
-        XCTAssertEqual(sut.errorMessage, localized("FEED_VIEW_CONNECTION_ERROR"), "Expected error message to be displayed on feed loading error")
+        XCTAssertEqual(sut.errorMessage, localized("GENERIC_CONNECTION_ERROR"), "Expected error message to be displayed on feed loading error")
         
         sut.simulateTapOnErrorView()
         XCTAssertNil(sut.errorMessage, "Expected error message to hide on tap")
