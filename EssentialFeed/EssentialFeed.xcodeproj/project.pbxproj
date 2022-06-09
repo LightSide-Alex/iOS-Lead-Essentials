@@ -332,6 +332,16 @@
 			path = "Feed API";
 			sourceTree = "<group>";
 		};
+		A04CA7EF2852973F00BDA9EC /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A0C49BB82852392A00F1AFDD /* Shared Presentation */,
+				A0930ECF28468A6500239868 /* Shared API */,
+				A0930ED028468A6C00239868 /* Shared API Infra */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		A06477AF277183E400A324A4 /* EssentialFeedCacheIntegrationTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -506,9 +516,7 @@
 			isa = PBXGroup;
 			children = (
 				A0AC45EB26DDDABB0063B260 /* EssentialFeed.h */,
-				A0C49BB82852392A00F1AFDD /* Shared Presentation */,
-				A0930ECF28468A6500239868 /* Shared API */,
-				A0930ED028468A6C00239868 /* Shared API Infra */,
+				A04CA7EF2852973F00BDA9EC /* Shared */,
 				A0930ED328468B2300239868 /* Image Comments Feature */,
 				A082018826DF1C7200BDFA5E /* Feed Feature */,
 				A0AC45EC26DDDABB0063B260 /* Info.plist */,
