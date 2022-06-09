@@ -8,7 +8,9 @@
 import Foundation
 
 public protocol ResourceView {
-    func display(_ viewModel: FeedViewModel)
+    associatedtype ResourceViewModel
+    
+    func display(_ viewModel: ResourceViewModel)
 }
 
 public protocol ResourceErrorView {
@@ -19,28 +21,33 @@ public protocol ResourceLoadingView {
     func display(_ viewModel: FeedLoadingViewModel)
 }
 
-public final class LoadResourcePresenter {
-    private let resourceView: ResourceView
+public final class LoadResourcePresenter<Resource, View: ResourceView> {
+    private let resourceView: View
     private let loadingView: ResourceLoadingView
     private let errorView: ResourceErrorView
+    private let mapper: (Resource) -> View.ResourceViewModel
     
-    public init(resourceView: ResourceView, loadingView: ResourceLoadingView, errorView: ResourceErrorView) {
+    public init(resourceView: View,
+                loadingView: ResourceLoadingView,
+                errorView: ResourceErrorView,
+                mapper: @escaping (Resource) -> View.ResourceViewModel) {
         self.resourceView = resourceView
         self.loadingView = loadingView
         self.errorView = errorView
+        self.mapper = mapper
     }
     
-    public func didStartLoadingFeed() {
+    public func didStartLoadingResource() {
         loadingView.display(FeedLoadingViewModel(isLoading: true))
         errorView.display(.noError)
     }
     
-    public func didFinishLoadingFeed(with feed: [FeedImage]) {
-        resourceView.display(FeedViewModel(feed: feed))
+    public func didFinishLoadingResource(with resource: Resource) {
+        resourceView.display(mapper(resource))
         loadingView.display(FeedLoadingViewModel(isLoading: false))
     }
     
-    public func didFinishLoadingFeed(with error: Error) {
+    public func didFinishLoadingResource(with error: Error) {
         errorView.display(.error(message: error.localizedDescription))
         loadingView.display(FeedLoadingViewModel(isLoading: false))
     }
