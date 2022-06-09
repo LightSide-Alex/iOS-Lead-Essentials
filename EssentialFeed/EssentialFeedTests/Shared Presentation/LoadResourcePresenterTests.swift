@@ -76,7 +76,7 @@ class LoadResourcePresenterTests: XCTestCase {
         
         var messages = Set<ReceivedMessages>()
         
-        func display(_ viewModel: FeedErrorViewModel) {
+        func display(_ viewModel: ResourceErrorViewModel) {
             messages.insert(.display(errorMessage: viewModel.message))
         }
         

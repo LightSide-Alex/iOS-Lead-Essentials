@@ -12,7 +12,7 @@ public protocol FeedView {
 }
 
 public protocol FeedErrorView {
-    func display(_ viewModel: FeedErrorViewModel)
+    func display(_ viewModel: ResourceErrorViewModel)
 }
 
 public protocol FeedLoadingView {
