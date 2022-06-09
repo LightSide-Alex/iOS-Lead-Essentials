@@ -7,18 +7,6 @@
 
 import Foundation
 
-public struct ResourceErrorViewModel {
-    public let message: String?
-    
-    static var noError: ResourceErrorViewModel {
-        return ResourceErrorViewModel(message: nil)
-    }
-    
-    static func error(message: String) -> ResourceErrorViewModel {
-        return ResourceErrorViewModel(message: message)
-    }
-}
-
 public protocol ResourceView {
     associatedtype ResourceViewModel
     
@@ -30,7 +18,7 @@ public protocol ResourceErrorView {
 }
 
 public protocol ResourceLoadingView {
-    func display(_ viewModel: FeedLoadingViewModel)
+    func display(_ viewModel: ResourceLoadingViewModel)
 }
 
 public final class LoadResourcePresenter<Resource, View: ResourceView> {
@@ -50,17 +38,17 @@ public final class LoadResourcePresenter<Resource, View: ResourceView> {
     }
     
     public func didStartLoadingResource() {
-        loadingView.display(FeedLoadingViewModel(isLoading: true))
+        loadingView.display(ResourceLoadingViewModel(isLoading: true))
         errorView.display(.noError)
     }
     
     public func didFinishLoadingResource(with resource: Resource) {
         resourceView.display(mapper(resource))
-        loadingView.display(FeedLoadingViewModel(isLoading: false))
+        loadingView.display(ResourceLoadingViewModel(isLoading: false))
     }
     
     public func didFinishLoadingResource(with error: Error) {
         errorView.display(.error(message: error.localizedDescription))
-        loadingView.display(FeedLoadingViewModel(isLoading: false))
+        loadingView.display(ResourceLoadingViewModel(isLoading: false))
     }
 }
