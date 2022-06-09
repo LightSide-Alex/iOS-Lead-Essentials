@@ -9,10 +9,6 @@ import XCTest
 import EssentialFeed
 
 class LoadResourcePresenterTests: XCTestCase {
-    func test_title_isLocalized() {
-        XCTAssertEqual(LoadResourcePresenter.title, localized("FEED_VIEW_TITLE"))
-    }
-    
     func test_init_doesNotSendMessageToView() {
         let (_, view) = makeSUT()
         
@@ -44,12 +40,13 @@ class LoadResourcePresenterTests: XCTestCase {
     
     func test_didFinishLoadingFeedWithError_stopsLoadingAndDisplaysErrorMessage() {
         let (sut, view) = makeSUT()
+        let error = anyNSError()
         
-        sut.didFinishLoadingFeed(with: anyNSError())
+        sut.didFinishLoadingFeed(with: error)
         
         XCTAssertEqual(view.messages, [
             .display(isLoading: false),
-            .display(errorMessage: localized("FEED_VIEW_CONNECTION_ERROR"))
+            .display(errorMessage: error.localizedDescription) // FIXME: change to a general error!
         ])
     }
     
@@ -61,16 +58,6 @@ class LoadResourcePresenterTests: XCTestCase {
         trackForMemoryLeaks(for: view, file: file, line: line)
         trackForMemoryLeaks(for: sut, file: file, line: line)
         return (sut, view)
-    }
-    
-    func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {
-        let table = "Feed"
-        let bundle = Bundle(for: LoadResourcePresenter.self)
-        let value = bundle.localizedString(forKey: key, value: nil, table: table)
-        if value == key {
-            XCTFail("Missing localized string for key: \(key) in table: \(table)", file: file, line: line)
-        }
-        return value
     }
     
     private final class ViewSpy: ResourceErrorView, ResourceLoadingView, ResourceView {
