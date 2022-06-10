@@ -48,7 +48,7 @@ class LoadResourcePresenterTests: XCTestCase {
         
         XCTAssertEqual(view.messages, [
             .display(isLoading: false),
-            .display(errorMessage: sut.connectionError)
+            .display(errorMessage: localized("GENERIC_CONNECTION_ERROR"))
         ])
     }
     
@@ -87,5 +87,15 @@ class LoadResourcePresenterTests: XCTestCase {
         func display(_ viewModel: ResourceViewModel) {
             messages.insert(.display(viewModel: viewModel))
         }
+    }
+    
+    func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {
+        let table = "Shared"
+        let bundle = Bundle(for: FeedPresenter.self)
+        let value = bundle.localizedString(forKey: key, value: nil, table: table)
+        if value == key {
+            XCTFail("Missing localized string for key: \(key) in table: \(table)", file: file, line: line)
+        }
+        return value
     }
 }

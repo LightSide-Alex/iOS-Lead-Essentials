@@ -42,17 +42,16 @@ class FeedPresenterTests: XCTestCase {
         ])
     }
     
-    // FIXME!
-//    func test_didFinishLoadingFeedWithError_stopsLoadingAndDisplaysErrorMessage() {
-//        let (sut, view) = makeSUT()
-//
-//        sut.didFinishLoadingFeed(with: anyNSError())
-//
-//        XCTAssertEqual(view.messages, [
-//            .display(isLoading: false),
-//            .display(errorMessage: localized("GENERIC_CONNECTION_ERROR"))
-//        ])
-//    }
+    func test_didFinishLoadingFeedWithError_stopsLoadingAndDisplaysErrorMessage() {
+        let (sut, view) = makeSUT()
+
+        sut.didFinishLoadingFeed(with: anyNSError())
+
+        XCTAssertEqual(view.messages, [
+            .display(isLoading: false),
+            .display(errorMessage: localized("GENERIC_CONNECTION_ERROR", table: "Shared"))
+        ])
+    }
     
     // MARK: - Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedPresenter, view: ViewSpy) {
@@ -63,8 +62,7 @@ class FeedPresenterTests: XCTestCase {
         return (sut, view)
     }
     
-    func localized(_ key: String, file: StaticString = #file, line: UInt = #line) -> String {
-        let table = "Feed"
+    func localized(_ key: String, table: String = "Feed", file: StaticString = #file, line: UInt = #line) -> String {
         let bundle = Bundle(for: FeedPresenter.self)
         let value = bundle.localizedString(forKey: key, value: nil, table: table)
         if value == key {
