@@ -48,7 +48,7 @@ class LoadResourcePresenterTests: XCTestCase {
         
         XCTAssertEqual(view.messages, [
             .display(isLoading: false),
-            .display(errorMessage: error.localizedDescription) // FIXME: change to a general error!
+            .display(errorMessage: sut.connectionError)
         ])
     }
     
