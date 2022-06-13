@@ -25,12 +25,12 @@ public final class LoadResourcePresenter<Resource, View: ResourceView> {
     private let resourceView: View
     private let loadingView: ResourceLoadingView
     private let errorView: ResourceErrorView
-    private let mapper: (Resource) -> View.ResourceViewModel
+    private let mapper: (Resource) throws -> View.ResourceViewModel
     
     public init(resourceView: View,
                 loadingView: ResourceLoadingView,
                 errorView: ResourceErrorView,
-                mapper: @escaping (Resource) -> View.ResourceViewModel) {
+                mapper: @escaping (Resource) throws -> View.ResourceViewModel) {
         self.resourceView = resourceView
         self.loadingView = loadingView
         self.errorView = errorView
@@ -44,17 +44,22 @@ public final class LoadResourcePresenter<Resource, View: ResourceView> {
                                  comment: "Error message displayed when we can't load the image feed from the server")
     }
     
-    public func didStartLoadingResource() {
+    public func didStartLoading() {
         loadingView.display(ResourceLoadingViewModel(isLoading: true))
         errorView.display(.noError)
     }
     
-    public func didFinishLoadingResource(with resource: Resource) {
-        resourceView.display(mapper(resource))
-        loadingView.display(ResourceLoadingViewModel(isLoading: false))
+    public func didFinishLoading(with resource: Resource) {
+        do {
+            let viewModel = try mapper(resource)
+            resourceView.display(viewModel)
+            loadingView.display(ResourceLoadingViewModel(isLoading: false))
+        } catch {
+            didFinishLoading(with: error)
+        }
     }
     
-    public func didFinishLoadingResource(with error: Error) {
+    public func didFinishLoading(with error: Error) {
         errorView.display(.error(message: Self.loadError))
         loadingView.display(ResourceLoadingViewModel(isLoading: false))
     }

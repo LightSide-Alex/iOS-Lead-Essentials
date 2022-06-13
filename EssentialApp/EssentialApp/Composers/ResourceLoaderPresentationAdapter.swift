@@ -20,7 +20,7 @@ final class ResourceLoaderPresentationAdapter<Resource, View: ResourceView> {
     }
     
     func loadResource() {
-        presenter?.didStartLoadingResource()
+        presenter?.didStartLoading()
         
         cancellable = loader()
             .dispatchOnMainQueue()
@@ -29,10 +29,10 @@ final class ResourceLoaderPresentationAdapter<Resource, View: ResourceView> {
                 case .finished:
                     break
                 case let .failure(error):
-                    self?.presenter?.didFinishLoadingResource(with: error)
+                    self?.presenter?.didFinishLoading(with: error)
                 }
             } receiveValue: { [weak self] feed in
-                self?.presenter?.didFinishLoadingResource(with: feed)
+                self?.presenter?.didFinishLoading(with: feed)
             }
     }
     
@@ -45,5 +45,15 @@ final class ResourceLoaderPresentationAdapter<Resource, View: ResourceView> {
 extension ResourceLoaderPresentationAdapter: FeedViewControllerDelegate {
     func didRequestFeedRefresh() {
         loadResource()
+    }
+}
+
+extension ResourceLoaderPresentationAdapter: FeedImageCellControllerDelegate {
+    func didRequestImage() {
+        loadResource()
+    }
+    
+    func didCancelImageRequest() {
+        cancel()
     }
 }

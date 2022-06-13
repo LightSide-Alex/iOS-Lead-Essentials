@@ -18,7 +18,7 @@ class LoadResourcePresenterTests: XCTestCase {
     func test_didStartLoadingFeed_displaysNoErrorMessageAndLoading() {
         let (sut, view) = makeSUT()
         
-        sut.didStartLoadingResource()
+        sut.didStartLoading()
         
         XCTAssertEqual(view.messages, [
             .display(errorMessage: nil),
@@ -32,7 +32,7 @@ class LoadResourcePresenterTests: XCTestCase {
             return inputResource + " mapped"
         }
         
-        sut.didFinishLoadingResource(with: resource)
+        sut.didFinishLoading(with: resource)
         
         XCTAssertEqual(view.messages, [
             .display(isLoading: false),
@@ -44,7 +44,7 @@ class LoadResourcePresenterTests: XCTestCase {
         let (sut, view) = makeSUT()
         let error = anyNSError()
         
-        sut.didFinishLoadingResource(with: error)
+        sut.didFinishLoading(with: error)
         
         XCTAssertEqual(view.messages, [
             .display(isLoading: false),
@@ -52,10 +52,23 @@ class LoadResourcePresenterTests: XCTestCase {
         ])
     }
     
+    func test_didFinishLoadingWithMapperError_displaysLocalizedErrorMessageAndStopsLoading() {
+        let (sut, view) = makeSUT(mapper: { resource in
+            throw anyNSError()
+        })
+        
+        sut.didFinishLoading(with: "resource")
+        
+        XCTAssertEqual(view.messages, [
+            .display(errorMessage: localized("GENERIC_CONNECTION_ERROR")),
+            .display(isLoading: false)
+        ])
+    }
+    
     // MARK: - Helpers
     private typealias SUT = LoadResourcePresenter<String, ViewSpy>
     private func makeSUT(
-        mapper: @escaping (String) -> String = { _ in "Any" },
+        mapper: @escaping (String) throws -> String = { _ in "Any" },
         file: StaticString = #file,
         line: UInt = #line) -> (sut: SUT, view: ViewSpy) {
             let view = ViewSpy()
