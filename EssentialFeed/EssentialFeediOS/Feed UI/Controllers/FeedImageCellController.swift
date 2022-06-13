@@ -52,14 +52,13 @@ extension FeedImageCellController: ResourceView {
     public typealias ResourceViewModel = UIImage
     
     public func display(_ viewModel: ResourceViewModel) {
-        cell?.feedImageRetryButton.isHidden = true
         cell?.feedImageView.setImageAnimated(viewModel)
     }
 }
 
 extension FeedImageCellController: ResourceErrorView {
     public func display(_ viewModel: ResourceErrorViewModel) {
-        cell?.feedImageRetryButton.isHidden = false
+        cell?.feedImageRetryButton.isHidden = viewModel.message == nil
     }
 }
 
