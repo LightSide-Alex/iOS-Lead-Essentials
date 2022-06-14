@@ -8,7 +8,7 @@
 import XCTest
 
 // MARK: - Helpers
-func assertLocalizedKeyAndValuesExist(_ bundle: Bundle,
+func assertLocalizedKeyAndValuesExist(in bundle: Bundle,
                                       _ table: String,
                                       file: StaticString = #file, line: UInt = #line) {
     let localizationBundles = allLocalizationBundles(in: bundle)
