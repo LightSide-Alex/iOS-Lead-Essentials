@@ -323,7 +323,6 @@
 		A010CB2D27A06DAC0070A9E4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A06A83A52790BB0E00C22EE4 /* ListViewController.swift */,
 				A0F4579D27A3148100665612 /* FeedImageCellController.swift */,
 			);
 			path = Controllers;
@@ -387,6 +386,41 @@
 				A030F153285CC6CB006CD7F7 /* EMPTY_FEED_dark.png */,
 			);
 			path = snapshots;
+			sourceTree = "<group>";
+		};
+		A030F160285CCA40006CD7F7 /* Shared UI */ = {
+			isa = PBXGroup;
+			children = (
+				A030F161285CCA4F006CD7F7 /* Controllers */,
+				A030F162285CCA59006CD7F7 /* Views */,
+			);
+			path = "Shared UI";
+			sourceTree = "<group>";
+		};
+		A030F161285CCA4F006CD7F7 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A06A83A52790BB0E00C22EE4 /* ListViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		A030F162285CCA59006CD7F7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A030F163285CCB0C006CD7F7 /* Helpers */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A030F163285CCB0C006CD7F7 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A06F7D1F27E22B4E00EC50CC /* UIRefreshControl+Helpers.swift */,
+				A05F37AA28199E4600C261EE /* UITableView+HeaderSizing.swift */,
+				A0AE16E727BD747300E9CFA7 /* UITableView+DequeueResuableCell.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		A0338F5026EEF0D400FE1A32 /* Feed API */ = {
@@ -456,10 +490,7 @@
 			isa = PBXGroup;
 			children = (
 				A0490A432799E23200A1002A /* UIView+Shimmering.swift */,
-				A0AE16E727BD747300E9CFA7 /* UITableView+DequeueResuableCell.swift */,
 				A0AE16E927BD749300E9CFA7 /* UIImageView+Animations.swift */,
-				A06F7D1F27E22B4E00EC50CC /* UIRefreshControl+Helpers.swift */,
-				A05F37AA28199E4600C261EE /* UITableView+HeaderSizing.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -496,6 +527,7 @@
 		A081D23E278C9775003F50A9 /* EssentialFeediOS */ = {
 			isa = PBXGroup;
 			children = (
+				A030F160285CCA40006CD7F7 /* Shared UI */,
 				A010CB3927A06F960070A9E4 /* Feed UI */,
 			);
 			path = EssentialFeediOS;
