@@ -10,7 +10,7 @@ import EssentialFeediOS
 @testable import EssentialFeed
 
 class FeedSnapshotTests: XCTestCase {
-    func test_feedWithContent() {
+    func test_listWithFeedContent() {
         let sut = makeSUT()
         
         sut.display(feedWithContent())
@@ -19,7 +19,7 @@ class FeedSnapshotTests: XCTestCase {
         assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "FEED_WITH_CONTENT_dark")
     }
     
-    func test_feedWithFailedImageLoading() {
+    func test_listFeedWithFailedImageLoading() {
         let sut = makeSUT()
         
         sut.display(feedWithFailedImageLoading())
