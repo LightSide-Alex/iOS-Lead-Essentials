@@ -65,8 +65,12 @@ extension ListViewController {
         return ds?.tableView(tableView, cellForRowAt: index)
     }
     
+    func simulateErrorViewTap() {
+        errorView.simulateTap()
+    }
+    
     var errorMessage: String? {
-        return errorView?.message
+        return errorView.message
     }
     
     func simulateTapOnErrorView() {
