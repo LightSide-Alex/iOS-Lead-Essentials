@@ -79,7 +79,7 @@ private extension ListViewController {
             return cellController
         }
         
-        display(cells)
+        display(cells.map { .init($0) })
     }
 }
 

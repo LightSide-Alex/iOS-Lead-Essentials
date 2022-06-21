@@ -54,7 +54,7 @@ class ImageCommentsSnapshotTests: XCTestCase {
                     username: "a."
                 )
             ),
-        ]
+        ].map { .init(dataSource: $0) }
     }
     
 }
