@@ -48,7 +48,7 @@ extension ListViewController {
     }
     
     func numberOfRenderedFeedImageViews() -> Int {
-        return tableView.numberOfRows(inSection: feedImagesSection)
+        tableView.numberOfSections == 0 ? 0 :  tableView.numberOfRows(inSection: feedImagesSection)
     }
     
     func renderedFeedImageData(at index: Int) -> Data? {
@@ -71,10 +71,6 @@ extension ListViewController {
     
     var errorMessage: String? {
         return errorView.message
-    }
-    
-    func simulateTapOnErrorView() {
-        errorView?.button.simulateTap()
     }
     
     private var feedImagesSection: Int {

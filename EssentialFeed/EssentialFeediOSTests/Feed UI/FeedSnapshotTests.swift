@@ -79,7 +79,7 @@ private extension ListViewController {
             return cellController
         }
         
-        display(cells.map { .init($0) })
+        display(cells.map { .init(id: UUID(), dataSource: $0) })
     }
 }
 

@@ -320,7 +320,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         loader.completeFeedLoadingWithError()
         XCTAssertEqual(sut.errorMessage, loadError, "Expected error message to be displayed on feed loading error")
         
-        sut.simulateTapOnErrorView()
+        sut.simulateErrorViewTap()
         XCTAssertNil(sut.errorMessage, "Expected error message to hide on tap")
     }
     
