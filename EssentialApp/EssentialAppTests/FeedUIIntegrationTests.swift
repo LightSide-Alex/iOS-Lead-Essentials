@@ -4,13 +4,14 @@
 //
 //  Created by Oleksandr Balan on 2022-01-13.
 //
+
 import XCTest
 import UIKit
 import EssentialApp
 import EssentialFeed
 import EssentialFeediOS
 
-final class FeedUIIntegrationTests: XCTestCase {
+class FeedUIIntegrationTests: XCTestCase {
     
     func test_feedView_hasTitle() {
         let (sut, _) = makeSUT()
