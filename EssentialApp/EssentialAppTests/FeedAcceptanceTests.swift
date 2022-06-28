@@ -57,7 +57,7 @@ class FeedAcceptanceTests: XCTestCase {
     
     // MARK: - Helpers
     private func launch(
-        httpClient: HTTPClientStub = .offline,
+        httpClient: HTTPClientStub = .offline, 
         store: InMemoryFeedStore = .empty
     ) -> ListViewController {
         let sut = SceneDelegate(httpClient: httpClient, store: store)
