@@ -10,6 +10,14 @@ import Foundation
 import XCTest
 
 extension CommentsUIIntegrationTests {
+    private struct DummyView: ResourceView {
+        func display(_ viewModel: Any) {}
+    }
+    
+    var loadError: String {
+        return LoadResourcePresenter<Any, DummyView>.loadError
+    }
+    
     var commentsTitle: String {
         ImageCommentsPresenter.title
     }

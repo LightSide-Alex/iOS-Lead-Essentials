@@ -72,33 +72,33 @@ final class CommentsUIIntegrationTests: XCTestCase {
         let comment0 = makeComment(message: "a message", username: "a username")
         let comment1 = makeComment(message: "another message", username: "another username")
         let (sut, loader) = makeSUT()
-
+        
         sut.loadViewIfNeeded()
         loader.completeCommentsLoading(with: [comment0, comment1], at: 0)
         assertThat(sut, isRendering: [comment0, comment1])
-
+        
         sut.simulateUserInitiatedReload()
         loader.completeCommentsLoading(with: [], at: 1)
         assertThat(sut, isRendering: [])
     }
-
+    
     func test_loadCommentsCompletion_doesNotAlterCurrentRenderingStateOnError() {
         let comment0 = makeComment(message: "a message", username: "a username")
         let (sut, loader) = makeSUT()
-
+        
         sut.loadViewIfNeeded()
         loader.completeCommentsLoading(with: [comment0], at: 0)
         assertThat(sut, isRendering: [comment0])
-
+        
         sut.simulateUserInitiatedReload()
         loader.completeCommentsLoadingWithError(at: 1)
         assertThat(sut, isRendering: [comment0])
     }
-
+    
     func test_loadCommentsCompletion_dispatchesFromBackgroundToMainThread() {
         let (sut, loader) = makeSUT()
         sut.loadViewIfNeeded()
-
+        
         let exp = expectation(description: "Wait for background queue")
         DispatchQueue.global().async {
             loader.completeCommentsLoading(at: 0)
@@ -106,32 +106,32 @@ final class CommentsUIIntegrationTests: XCTestCase {
         }
         wait(for: [exp], timeout: 1.0)
     }
-
-//    override func test_loadFeedCompletion_rendersErrorMessageOnErrorUntilNextReload() {
-//        let (sut, loader) = makeSUT()
-//
-//        sut.loadViewIfNeeded()
-//        XCTAssertEqual(sut.errorMessage, nil)
-//
-//        loader.completeCommentsLoadingWithError(at: 0)
-//        XCTAssertEqual(sut.errorMessage, loadError)
-//
-//        sut.simulateUserInitiatedReload()
-//        XCTAssertEqual(sut.errorMessage, nil)
-//    }
-//
-//    override func test_tapOnErrorView_hidesErrorMessage() {
-//        let (sut, loader) = makeSUT()
-//
-//        sut.loadViewIfNeeded()
-//        XCTAssertEqual(sut.errorMessage, nil)
-//
-//        loader.completeCommentsLoadingWithError(at: 0)
-//        XCTAssertEqual(sut.errorMessage, loadError)
-//
-//        sut.simulateErrorViewTap()
-//        XCTAssertEqual(sut.errorMessage, nil)
-//    }
+    
+    func test_loadCommentsCompletion_rendersErrorMessageOnErrorUntilNextReload() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        XCTAssertEqual(sut.errorMessage, nil)
+        
+        loader.completeCommentsLoadingWithError(at: 0)
+        XCTAssertEqual(sut.errorMessage, loadError)
+        
+        sut.simulateUserInitiatedReload()
+        XCTAssertEqual(sut.errorMessage, nil)
+    }
+    
+    func test_tapOnErrorView_hidesErrorMessage() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        XCTAssertEqual(sut.errorMessage, nil)
+        
+        loader.completeCommentsLoadingWithError(at: 0)
+        XCTAssertEqual(sut.errorMessage, loadError)
+        
+        sut.simulateErrorViewTap()
+        XCTAssertEqual(sut.errorMessage, nil)
+    }
     
     // MARK: - Helpers
     
