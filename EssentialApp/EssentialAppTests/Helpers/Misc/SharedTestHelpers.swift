@@ -26,3 +26,19 @@ func uniqueImageFeed() -> [FeedImage] {
 func uniqueImage() -> FeedImage {
     FeedImage(id: UUID(), description: "any", location: "any", url: anyURL())
 }
+
+private struct DummyView: ResourceView {
+    func display(_ viewModel: Any) {}
+}
+
+var loadError: String {
+    return LoadResourcePresenter<Any, DummyView>.loadError
+}
+
+var feedTitle: String {
+    FeedPresenter.title
+}
+
+var commentsTitle: String {
+    ImageCommentsPresenter.title
+}
