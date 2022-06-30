@@ -19,14 +19,19 @@ public final class FeedImageCellController: NSObject {
     private let viewModel: FeedImageViewModel
     private let delegate: FeedImageCellControllerDelegate
     private var cell: FeedImageCell?
+    private let onSelect: () -> Void
     
-    public init(viewModel: FeedImageViewModel, delegate: FeedImageCellControllerDelegate) {
+    public init(viewModel: FeedImageViewModel, delegate: FeedImageCellControllerDelegate, onSelect: @escaping () -> Void) {
         self.viewModel = viewModel
         self.delegate = delegate
+        self.onSelect = onSelect
     }
 }
 
 extension FeedImageCellController: UITableViewDelegate, UITableViewDataSource, UITableViewDataSourcePrefetching {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        onSelect()
+    }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         1
