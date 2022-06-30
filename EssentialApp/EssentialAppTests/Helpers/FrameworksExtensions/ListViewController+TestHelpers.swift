@@ -9,6 +9,7 @@ import UIKit
 import EssentialFeediOS
 
 extension ListViewController {
+    // MARK: - General
     func simulateUserInitiatedReload() {
         refreshControl?.simulatePullToRefresh()
     }
@@ -25,6 +26,7 @@ extension ListViewController {
         return errorView.message
     }
     
+    // MARK: - Feed related
     @discardableResult
     func simulateFeedImageViewVisible(at index: Int) -> FeedImageCell? {
         return feedImageView(at: index) as? FeedImageCell
@@ -76,4 +78,24 @@ extension ListViewController {
     private var feedImagesSection: Int {
         return 0
     }
+    
+    // MARK: - Comments related
+    private var commentSection: Int {
+        return 0
+    }
+    
+    func numberOfRenderedComments() -> Int {
+        tableView.numberOfSections == 0 ? 0 :  tableView.numberOfRows(inSection: commentSection)
+    }
+    
+    func comment(at row: Int) -> UITableViewCell? {
+        guard numberOfRenderedComments() > row else {
+            return nil
+        }
+        
+        let ds = tableView.dataSource
+        let index = IndexPath(row: row, section: commentSection)
+        return ds?.tableView(tableView, cellForRowAt: index)
+    }
+    
 }
