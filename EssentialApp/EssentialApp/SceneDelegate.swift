@@ -7,16 +7,11 @@
 
 import UIKit
 import CoreData
-import EssentialFeed
-import EssentialFeediOS
 import Combine
+import EssentialFeed
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-    
-    private lazy var localFeedLoader: LocalFeedLoader = {
-        LocalFeedLoader(store: store, currentDate: Date.init)
-    }()
     
     private lazy var httpClient: HTTPClient = {
         URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
@@ -26,9 +21,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         try! CoreDataFeedStore(
             storeURL: NSPersistentContainer
                 .defaultDirectoryURL()
-                .appendingPathComponent("feed-store.sqlite")
-        )
+                .appendingPathComponent("feed-store.sqlite"))
     }()
+    
+    private lazy var localFeedLoader: LocalFeedLoader = {
+        LocalFeedLoader(store: store, currentDate: Date.init)
+    }()
+    
+    private lazy var baseURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed")!
+    
+    private lazy var navigationController = UINavigationController(
+        rootViewController: FeedUIComposer.feedComposedWith(
+            feedLoader: makeRemoteFeedLoaderWithLocalFallback,
+            imageLoader: makeLocalImageLoaderWithRemoteFallback,
+            selection: showComments))
     
     convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
         self.init()
@@ -38,19 +44,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: scene)
         
+        window = UIWindow(windowScene: scene)
         configureWindow()
     }
     
     func configureWindow() {
-        
-        let feedController = FeedUIComposer.feedComposedWith(
-            feedLoader: makeRemoteFeedLoaderWithLocalFallback,
-            imageLoader: makeLocalImageLoaderWithRemoteFallback
-        )
-        
-        window?.rootViewController = UINavigationController(rootViewController: feedController)
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
     
@@ -58,13 +58,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         localFeedLoader.validateCache { _ in }
     }
     
+    private func showComments(for image: FeedImage) {
+        let url = baseURL.appendingPathComponent("/v1/image/\(image.id)/comments")
+        let comments = CommentsUIComposer.commentsComposedWith(commentsLoader: makeRemoteCommentsLoader(url: url))
+        navigationController.pushViewController(comments, animated: true)
+    }
+    
+    private func makeRemoteCommentsLoader(url: URL) -> () -> AnyPublisher<[ImageComment], Error> {
+        return { [httpClient] in
+            return httpClient
+                .getPublisher(url: url)
+                .tryMap(ImageCommentsMapper.map)
+                .eraseToAnyPublisher()
+        }
+    }
+    
     private func makeRemoteFeedLoaderWithLocalFallback() -> AnyPublisher<[FeedImage], Error> {
-        let remoteURL = URL(string: "https://ile-api.essentialdeveloper.com/essential-feed/v1/feed")!
+        let remoteURL = baseURL.appendingPathComponent("/v1/feed")
         
         return httpClient
             .getPublisher(url: remoteURL)
             .tryMap(FeedItemsMapper.map)
-            .cache(to: localFeedLoader)
+            .caching(to: localFeedLoader)
             .fallback(to: localFeedLoader.loadPublisher)
     }
     
@@ -72,12 +87,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let localImageLoader = LocalFeedImageDataLoader(store: store)
         
         return localImageLoader
-            .loadImageDataPublisher(url: url)
-            .fallback { [httpClient] in
+            .loadImageDataPublisher(from: url)
+            .fallback(to: { [httpClient] in
                 httpClient
                     .getPublisher(url: url)
                     .tryMap(FeedImageDataMapper.map)
-                    .cache(to: localImageLoader, using: url)
-            }
+                    .caching(to: localImageLoader, using: url)
+            })
     }
 }

@@ -104,4 +104,8 @@ extension ListViewController {
         return ds?.tableView(tableView, cellForRowAt: index)
     }
     
+    func commentMessage(at row: Int) -> String? {
+        guard let comment = comment(at: row) as? ImageCommentCell else { return nil }
+        return comment.messageLabel.text
+    }
 }
