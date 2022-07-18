@@ -133,6 +133,7 @@
 		A0F236F62885AE1B00474053 /* FEED_WITH_LOAD_MORE_ERROR_light.png in Resources */ = {isa = PBXBuildFile; fileRef = A0F236F32885AE1B00474053 /* FEED_WITH_LOAD_MORE_ERROR_light.png */; };
 		A0F236F72885AE1B00474053 /* FEED_WITH_LOAD_MORE_ERROR_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = A0F236F42885AE1B00474053 /* FEED_WITH_LOAD_MORE_ERROR_dark.png */; };
 		A0F236F82885AE1B00474053 /* FEED_WITH_LOAD_MORE_ERROR_extraExtraExtraLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = A0F236F52885AE1B00474053 /* FEED_WITH_LOAD_MORE_ERROR_extraExtraExtraLarge.png */; };
+		A0F236FA2885AE5400474053 /* Paginated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F236F92885AE5400474053 /* Paginated.swift */; };
 		A0F4579E27A3148100665612 /* FeedImageCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F4579D27A3148100665612 /* FeedImageCellController.swift */; };
 /* End PBXBuildFile section */
 
@@ -306,6 +307,7 @@
 		A0F236F32885AE1B00474053 /* FEED_WITH_LOAD_MORE_ERROR_light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FEED_WITH_LOAD_MORE_ERROR_light.png; sourceTree = "<group>"; };
 		A0F236F42885AE1B00474053 /* FEED_WITH_LOAD_MORE_ERROR_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FEED_WITH_LOAD_MORE_ERROR_dark.png; sourceTree = "<group>"; };
 		A0F236F52885AE1B00474053 /* FEED_WITH_LOAD_MORE_ERROR_extraExtraExtraLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FEED_WITH_LOAD_MORE_ERROR_extraExtraExtraLarge.png; sourceTree = "<group>"; };
+		A0F236F92885AE5400474053 /* Paginated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paginated.swift; sourceTree = "<group>"; };
 		A0F4579D27A3148100665612 /* FeedImageCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCellController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -685,6 +687,7 @@
 			isa = PBXGroup;
 			children = (
 				A0911F9B26EEE4A900BC4A60 /* HTTPClient.swift */,
+				A0F236F92885AE5400474053 /* Paginated.swift */,
 			);
 			path = "Shared API";
 			sourceTree = "<group>";
@@ -1248,6 +1251,7 @@
 				A0754AF828733AB800D3556E /* ImageCommentsEndpoint.swift in Sources */,
 				A09C7A2F274750230065B91E /* FeedCachePolicy.swift in Sources */,
 				A0930ECE28467D5600239868 /* ImageComment.swift in Sources */,
+				A0F236FA2885AE5400474053 /* Paginated.swift in Sources */,
 				A0ECF8CC275C400B00F5F559 /* FeedStore.xcdatamodeld in Sources */,
 				A0754AF628733AA400D3556E /* FeedEndpoint.swift in Sources */,
 				A030364227E381AA00D2BD89 /* ResourceLoadingViewModel.swift in Sources */,
