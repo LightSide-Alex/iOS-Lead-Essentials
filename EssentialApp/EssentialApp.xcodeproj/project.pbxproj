@@ -41,6 +41,7 @@
 		A0D0184B27FCAC0C00BD35BF /* EssentialFeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0D0184827FCAC0C00BD35BF /* EssentialFeediOS.framework */; };
 		A0D0184C27FCAC0C00BD35BF /* EssentialFeediOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0D0184827FCAC0C00BD35BF /* EssentialFeediOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0E6EA55280872A000D8AB36 /* XCTestCase+FeedImageDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E6EA54280872A000D8AB36 /* XCTestCase+FeedImageDataLoader.swift */; };
+		A0F0A4CA288F2C9B005256BD /* NullStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F0A4C9288F2C9B005256BD /* NullStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +106,7 @@
 		A0D0184727FCAC0C00BD35BF /* EssentialFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EssentialFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0D0184827FCAC0C00BD35BF /* EssentialFeediOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EssentialFeediOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0E6EA54280872A000D8AB36 /* XCTestCase+FeedImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FeedImageDataLoader.swift"; sourceTree = "<group>"; };
+		A0F0A4C9288F2C9B005256BD /* NullStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +227,7 @@
 			children = (
 				A044FA242816F50300DA2A2A /* Composers */,
 				A078154827FC8EA300FF0253 /* AppDelegate.swift */,
+				A0F0A4C9288F2C9B005256BD /* NullStore.swift */,
 				A078154A27FC8EA300FF0253 /* SceneDelegate.swift */,
 				A078154C27FC8EA300FF0253 /* ViewController.swift */,
 				A08E72A2282C0335004782DE /* CombineHelpers.swift */,
@@ -361,6 +364,7 @@
 			files = (
 				A044FA3C2816F59E00DA2A2A /* FeedViewAdapter.swift in Sources */,
 				A078154D27FC8EA300FF0253 /* ViewController.swift in Sources */,
+				A0F0A4CA288F2C9B005256BD /* NullStore.swift in Sources */,
 				A0C25EFC28563E9000006554 /* ResourceLoaderPresentationAdapter.swift in Sources */,
 				A08E72A3282C0335004782DE /* CombineHelpers.swift in Sources */,
 				A0C0EB0E286B47F0007CDA9A /* CommentsUIComposer.swift in Sources */,
