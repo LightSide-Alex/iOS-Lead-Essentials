@@ -5,6 +5,7 @@
 //  Created by Oleksandr Balan on 2022-04-05.
 //
 
+import os
 import UIKit
 import CoreData
 import Combine
@@ -12,6 +13,8 @@ import EssentialFeed
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+    
+    private lazy var logger = Logger(subsystem: "com.essentialdeveloper.EssentialAppCaseStudy", category: "main")
     
     private lazy var httpClient: HTTPClient = {
         URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
@@ -25,6 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     .appendingPathComponent("feed-store.sqlite"))
         } catch {
             assertionFailure("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
+            logger.fault("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
             return NullStore()
         }
     }()
