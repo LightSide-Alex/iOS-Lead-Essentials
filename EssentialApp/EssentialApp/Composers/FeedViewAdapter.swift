@@ -14,8 +14,8 @@ final class FeedViewAdapter: ResourceView {
     private let imageLoader: (URL) -> FeedImageDataLoader.Publisher
     private let selection: (FeedImage) -> Void
     
-    private typealias ImageDataPresentationAdapter = ResourceLoaderPresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>>
-    private typealias LoadMorePresentationAdapter = ResourceLoaderPresentationAdapter<Paginated<FeedImage>, FeedViewAdapter>
+    private typealias ImageDataPresentationAdapter = LoadResourcePresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>>
+    private typealias LoadMorePresentationAdapter = LoadResourcePresentationAdapter<Paginated<FeedImage>, FeedViewAdapter>
 
     init(controller: ListViewController, imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher, selection: @escaping (FeedImage) -> Void) {
         self.controller = controller
